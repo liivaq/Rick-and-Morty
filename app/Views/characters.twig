@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Rick and Morty Characters</title>
+</head>
+<body>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full">
+    {% for character in characters %}
+        <div class="flex flex-col xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden cursor-pointer">
+            <img
+                    class="object-cover w-200 h-48"
+                    src="{{ character.image }}"
+                    alt="Flower and sky"
+            />
+
+            <div class="relative p-4">
+                <h3 class="text-base md:text-xl font-medium text-gray-800">
+                    {{ character.name }}
+                </h3>
+
+                <p class="mt-4 text-base md:text-lg text-gray-600">
+                <ul>
+                    <li>Status: {{ character.status }}</li>
+                    <li>Last known location: {{ character.location.name }}</li>
+                    <li>First seen in: {{ character.episode.name }}</li>
+                </ul>
+
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+</body>
+</html>
