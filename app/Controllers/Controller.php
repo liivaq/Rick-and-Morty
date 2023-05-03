@@ -17,18 +17,18 @@ class Controller
     public function characters($page = 1): View
     {
         $response = $this->client->getCharacters($page);
-        return new View('characters', ['characters' => $response]);
+        return new View('characters', $response);
     }
 
     public function episodes($page = 1): View
     {
         $response = $this->client->getEpisodes($page);
-        return new View('episodes', ['episodes' => $response]);
+        return new View('episodes', $response);
     }
 
     public function locations($page = 1): View
     {
         $response = $this->client->getLocations($page);
-        return new View('locations', ['locations' => $response]);
+        return new View('locations', $response);
     }
 }

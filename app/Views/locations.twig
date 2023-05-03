@@ -18,7 +18,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for location in locations.locations %}
+                        {% for location in locations %}
                             <tr class="border-b dark:border-neutral-500">
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">{{ location.id }}</td>
                                 <td class="whitespace-nowrap  px-6 py-4">{{ location.name }}</td>
@@ -35,7 +35,7 @@
     </div>
     <div class="max-w-auto mx-auto">
         <ul class="inline-flex flex-wrap justify-center">
-            {% for i in 1..locations.pageinfo.pages%}
+            {% for i in 1..page.pages%}
                 <li>
                     <a
                             class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"

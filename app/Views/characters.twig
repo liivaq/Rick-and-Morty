@@ -3,7 +3,7 @@
 {% block content %}
     <div class="grid h-screen place-items-center">
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full p-6">
-    {% for character in characters.characters %}
+    {% for character in characters %}
         <div class="flex flex-col xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden">
             <img
                     class="object-cover w-200 h-48"
@@ -42,7 +42,7 @@
 </div>
 <div class="max-w-auto mx-auto">
         <ul class="inline-flex flex-wrap justify-center">
-            {% for i in 1..characters.pageinfo.pages%}
+            {% for i in 1..page.pages%}
                 <li>
                     <a
                             class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
