@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-class Episode
+class Location
 {
     private int $id;
     private string $name;
-    private string $airDate;
-    private string $episode;
+    private string $type;
+    private string $dimension;
     private array $characters;
 
-    public function __construct(int $id, string $name, string $airDate, string $episode, array $characters)
+    public function __construct(int $id, string $name, string $type, string $dimension, array $characters)
     {
         $this->id = $id;
         $this->name = $name;
-        $this->airDate = $airDate;
-        $this->episode = $episode;
+        $this->type = $type;
+        $this->dimension = $dimension;
         $this->characters = $characters;
     }
 
@@ -29,9 +29,9 @@ class Episode
         return $this->name;
     }
 
-    public function getAirDate(): string
+    public function getType(): string
     {
-        return $this->airDate;
+        return $this->type;
     }
 
     public function getCharacters(): array
@@ -39,9 +39,9 @@ class Episode
         return $this->characters;
     }
 
-    public function getEpisode(): string
+    public function getDimension(): string
     {
-        return $this->episode;
+        return $this->dimension;
     }
 
 }

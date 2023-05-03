@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-class CharacterPage
+class EpisodePage
 {
-    private array $characters;
+    private array $episodes;
     private \stdClass $pageInfo;
 
-    public function __construct(array $characters, \stdClass $pageInfo)
+    public function __construct(array $episodes, \stdClass $pageInfo)
     {
-        $this->characters = $characters;
+        $this->episodes = $episodes;
         $this->pageInfo = $pageInfo;
     }
 
-    public function getCharacters(): array
+    public function getEpisodes(): array
     {
-        return $this->characters;
+        return $this->episodes;
     }
 
 
@@ -23,6 +23,4 @@ class CharacterPage
     {
         return $this->pageInfo;
     }
-
-
 }

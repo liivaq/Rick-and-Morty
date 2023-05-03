@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-class CharacterPage
+class LocationPage
 {
-    private array $characters;
+    private array $locations;
     private \stdClass $pageInfo;
 
-    public function __construct(array $characters, \stdClass $pageInfo)
+    public function __construct(array $locations, \stdClass $pageInfo)
     {
-        $this->characters = $characters;
+        $this->locations = $locations;
         $this->pageInfo = $pageInfo;
     }
 
-    public function getCharacters(): array
+    public function getLocations(): array
     {
-        return $this->characters;
+        return $this->locations;
     }
 
 
@@ -23,6 +23,4 @@ class CharacterPage
     {
         return $this->pageInfo;
     }
-
-
 }

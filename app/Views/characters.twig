@@ -1,55 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Rick and Morty Characters</title>
-</head>
-<body>
-<header>
-    <nav
-            class="relative flex w-full flex-wrap items-center justify-between bg-neutral-900 py-2 text-neutral-200 shadow-lg lg:flex-wrap lg:justify-start lg:py-4"
-            data-te-navbar-ref>
-        <div class="flex w-full flex-wrap items-center justify-between px-3">
+{% extends "template.twig" %}
 
-            <div
-                    class="!visible mt-2 hidden flex-grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
-                    id="navbarSupportedContent4"
-                    data-te-collapse-item>
-                <a class="pr-2 text-xl font-semibold text-white" href="#">Rick and Morty</a>
-                <ul
-                        class="list-style-none mr-auto flex flex-col pl-0 lg:flex-row"
-                        data-te-navbar-nav-ref>
-                    <li class="my-4 lg:my-0 lg:pr-2">
-                        <a
-                                class="text-white disabled:text-black/30 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-                                href="/"
-                        >Home</a
-                        >
-                    </li>
-                    <li class="mb-4 lg:mb-0 lg:pr-2">
-                        <a
-                                class="p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80 disabled:text-black/30 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-                                href="#"
-                        >Episodes</a
-                        >
-                    </li>
-                    <li class="mb-4 lg:mb-0 lg:pr-2">
-                        <a
-                                class="p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80 disabled:text-black/30 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-                                href="#"
-                        >Locations</a
-                        >
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-
+{% block content %}
+    <div class="grid h-screen place-items-center">
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full p-6">
     {% for character in characters.characters %}
         <div class="flex flex-col xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden">
@@ -101,5 +53,6 @@
             {% endfor %}
         </ul>
 </div>
-</body>
-</html>
+    </div>
+
+{% endblock %}

@@ -19,4 +19,16 @@ class Controller
         $response = $this->client->getCharacters($page);
         return new View('characters', ['characters' => $response]);
     }
+
+    public function episodes($page = 1): View
+    {
+        $response = $this->client->getEpisodes($page);
+        return new View('episodes', ['episodes' => $response]);
+    }
+
+    public function locations($page = 1): View
+    {
+        $response = $this->client->getLocations($page);
+        return new View('locations', ['locations' => $response]);
+    }
 }

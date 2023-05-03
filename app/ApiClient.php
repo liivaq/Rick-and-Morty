@@ -4,6 +4,9 @@ namespace app;
 
 use App\Models\CharacterPage;
 use App\Models\Episode;
+use App\Models\EpisodePage;
+use App\Models\Location;
+use App\Models\LocationPage;
 use GuzzleHttp\Client;
 use App\Models\Character;
 
@@ -24,17 +27,30 @@ class ApiClient
         $characters = $this->fetchCharacters($response->results);
         return new CharacterPage($characters, $response->info);
     }
+    public function getEpisodes($page = 1): EpisodePage
+    {
+        $response = json_decode($this->client->get('episode/?page=' . $page)->getBody()->getContents());
+        $episodes = $this->fetchEpisodes($response->results);
+        return new EpisodePage($episodes, $response->info);
+    }
+
+    public function getLocations($page = 1): LocationPage
+    {
+        $response = json_decode($this->client->get('location/?page=' . $page)->getBody()->getContents());
+        $locations = $this->fetchLocations($response->results);
+        return new LocationPage($locations, $response->info);
+    }
 
     private function fetchCharacters(array $response): array
     {
         $characters = [];
         foreach ($response as $character) {
-            $characters[] = $this->createModel($character);
+            $characters[] = $this->createCharacter($character);
         }
         return $characters;
     }
 
-    private function createModel(\stdClass $character): Character
+    private function createCharacter(\stdClass $character): Character
     {
         return new Character(
             $character->name,
@@ -52,6 +68,46 @@ class ApiClient
     private function fetchFirstEpisode(string $episode): Episode
     {
         $response = json_decode($this->client->get($episode)->getBody()->getContents());
-        return new Episode($response->name, $response->air_date, $response->characters);
+        return $this->createEpisode($response);
+    }
+
+    private function fetchEpisodes(array $response): array
+    {
+        $episodes = [];
+        foreach ($response as $episode) {
+            $episodes[] = $this->createEpisode($episode);
+        }
+        return $episodes;
+    }
+
+    private function createEpisode(\stdClass $episode): Episode
+    {
+        return new Episode(
+            $episode->id,
+            $episode->name,
+            $episode->air_date,
+            $episode->episode,
+            $episode->characters
+        );
+    }
+
+    private function fetchLocations(array $response): array
+    {
+        $episodes = [];
+        foreach ($response as $episode) {
+            $episodes[] = $this->createLocation($episode);
+        }
+        return $episodes;
+    }
+
+    private function createLocation(\stdClass $episode): Location
+    {
+        return new Location(
+            $episode->id,
+            $episode->name,
+            $episode->type,
+            $episode->dimension,
+            $episode->residents
+        );
     }
 }
