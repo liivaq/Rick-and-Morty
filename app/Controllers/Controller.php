@@ -14,10 +14,9 @@ class Controller
         $this->client = new ApiClient();
     }
 
-    public function characters(): View
+    public function characters($page = 1): View
     {
-        $response = $this->client->getCharacters();
+        $response = $this->client->getCharacters($page);
         return new View('characters', ['characters' => $response]);
     }
-
 }

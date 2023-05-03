@@ -15,7 +15,6 @@ class Episode
         $this->characters = $characters;
     }
 
-
     public function getName(): string
     {
         return $this->name;
@@ -30,6 +29,5 @@ class Episode
     {
         return $this->characters;
     }
-
 
 }

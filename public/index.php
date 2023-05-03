@@ -5,9 +5,7 @@ use App\Core\Router;
 
 require_once '../vendor/autoload.php';
 
-$router = new Router();
-
-$response = $router::route();
+$response = Router::route();
 
 $renderer = new Renderer();
 

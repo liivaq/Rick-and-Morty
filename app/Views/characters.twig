@@ -9,31 +9,97 @@
     <title>Rick and Morty Characters</title>
 </head>
 <body>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full">
-    {% for character in characters %}
-        <div class="flex flex-col xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden cursor-pointer">
+<header>
+    <nav
+            class="relative flex w-full flex-wrap items-center justify-between bg-neutral-900 py-2 text-neutral-200 shadow-lg lg:flex-wrap lg:justify-start lg:py-4"
+            data-te-navbar-ref>
+        <div class="flex w-full flex-wrap items-center justify-between px-3">
+
+            <div
+                    class="!visible mt-2 hidden flex-grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto"
+                    id="navbarSupportedContent4"
+                    data-te-collapse-item>
+                <a class="pr-2 text-xl font-semibold text-white" href="#">Rick and Morty</a>
+                <ul
+                        class="list-style-none mr-auto flex flex-col pl-0 lg:flex-row"
+                        data-te-navbar-nav-ref>
+                    <li class="my-4 lg:my-0 lg:pr-2">
+                        <a
+                                class="text-white disabled:text-black/30 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
+                                href="/"
+                        >Home</a
+                        >
+                    </li>
+                    <li class="mb-4 lg:mb-0 lg:pr-2">
+                        <a
+                                class="p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80 disabled:text-black/30 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
+                                href="#"
+                        >Episodes</a
+                        >
+                    </li>
+                    <li class="mb-4 lg:mb-0 lg:pr-2">
+                        <a
+                                class="p-0 text-white opacity-60 hover:opacity-80 focus:opacity-80 disabled:text-black/30 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
+                                href="#"
+                        >Locations</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full p-6">
+    {% for character in characters.characters %}
+        <div class="flex flex-col xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden">
             <img
                     class="object-cover w-200 h-48"
                     src="{{ character.image }}"
-                    alt="Flower and sky"
-            />
+                    alt="{{ character.name }}"
+            >
 
             <div class="relative p-4">
                 <h3 class="text-base md:text-xl font-medium text-gray-800">
                     {{ character.name }}
                 </h3>
 
-                <p class="mt-4 text-base md:text-lg text-gray-600">
                 <ul>
-                    <li>Status: {{ character.status }}</li>
-                    <li>Last known location: {{ character.location.name }}</li>
-                    <li>First seen in: {{ character.episode.name }}</li>
+                    {% if character.status == 'Dead' %}
+                        <h2 class="bg-red-500 text-white font-bold rounded px-4 py-1 w-1/2">
+                            Dead
+                        </h2>
+                    {% else %}
+                        <h2 class="bg-green-500 text-white font-bold rounded px-4 py-1 w-1/2">
+                            Alive
+                        </h2>
+                    {% endif %}
+                    <li><strong>Species:</strong>
+                        {{ character.species }}
+                    </li>
+                    <li><strong>Last known location:</strong>
+                        {{ character.location.name }}
+                    </li>
+                    <li><strong>First seen in:</strong>
+                        {{ character.firstepisode.name }}
+                    </li>
                 </ul>
-
             </div>
         </div>
     {% endfor %}
-
+</div>
+<div class="max-w-auto mx-auto">
+        <ul class="inline-flex flex-wrap justify-center">
+            {% for i in 1..characters.pageinfo.pages%}
+                <li>
+                    <a
+                            class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                            href="/characters/{{ i }}"
+                    >{{ i }}</a
+                    >
+                </li>
+            {% endfor %}
+        </ul>
 </div>
 </body>
 </html>

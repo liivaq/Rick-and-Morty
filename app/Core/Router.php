@@ -10,7 +10,7 @@ class Router
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
             $r->addRoute('GET', '/', ['App\Controllers\Controller', 'characters']);
-            $r->addRoute('GET', '/characters[{/page}]', ['App\Controllers\Controller', 'characters']);
+            $r->addRoute('GET', '/characters[/{page}]', ['App\Controllers\Controller', 'characters']);
         });
 
         $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -30,9 +30,10 @@ class Router
                 break;
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
+                $vars = $routeInfo[2];
                 [$controller, $method] = $handler;
 
-                return (new $controller)->{$method}();
+                return (new $controller)->{$method}($vars['page']);
         }
         return null;
     }

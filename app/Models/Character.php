@@ -8,10 +8,10 @@ class Character
     private string $species;
     private \stdClass $origin;
     private \stdClass $location;
-
     private string $image;
     private string $url;
-    private Episode $episode;
+    private array $episodes;
+    private Episode $firstEpisode;
 
     public function __construct(
         string    $name,
@@ -21,7 +21,8 @@ class Character
         \stdClass $location,
         string    $image,
         string    $url,
-        Episode   $episode
+        array     $episodes,
+        Episode   $firstEpisode
     )
     {
         $this->name = $name;
@@ -31,7 +32,8 @@ class Character
         $this->location = $location;
         $this->image = $image;
         $this->url = $url;
-        $this->episode = $episode;
+        $this->episodes = $episodes;
+        $this->firstEpisode = $firstEpisode;
     }
 
     public function getName(): string
@@ -69,9 +71,13 @@ class Character
         return $this->url;
     }
 
-    public function getEpisode(): Episode
+    public function getEpisode(): array
     {
-        return $this->episode;
+        return $this->episodes;
     }
 
+    public function getFirstEpisode(): Episode
+    {
+        return $this->firstEpisode;
+    }
 }

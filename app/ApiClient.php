@@ -2,6 +2,7 @@
 
 namespace app;
 
+use App\Models\CharacterPage;
 use App\Models\Episode;
 use GuzzleHttp\Client;
 use App\Models\Character;
@@ -17,14 +18,20 @@ class ApiClient
         ]);
     }
 
-    public function getCharacters(): array
+    public function getCharacters($page = 1): CharacterPage
     {
-        $response = json_decode($this->client->get('character')->getBody()->getContents());
-        $characterCollection = [];
-        foreach ($response->results as $character) {
-            $characterCollection[] = $this->createModel($character);
+        $response = json_decode($this->client->get('character/?page=' . $page)->getBody()->getContents());
+        $characters = $this->fetchCharacters($response->results);
+        return new CharacterPage($characters, $response->info);
+    }
+
+    private function fetchCharacters(array $response): array
+    {
+        $characters = [];
+        foreach ($response as $character) {
+            $characters[] = $this->createModel($character);
         }
-        return $characterCollection;
+        return $characters;
     }
 
     private function createModel(\stdClass $character): Character
@@ -37,14 +44,14 @@ class ApiClient
             $character->location,
             $character->image,
             $character->url,
+            $character->episode,
             $this->fetchFirstEpisode($character->episode[0])
         );
     }
 
-    private function fetchFirstEpisode($episode): Episode
+    private function fetchFirstEpisode(string $episode): Episode
     {
         $response = json_decode($this->client->get($episode)->getBody()->getContents());
         return new Episode($response->name, $response->air_date, $response->characters);
     }
-
 }
