@@ -23,12 +23,15 @@ class ApiClient
     {
         $response = json_decode($this->client->get('character/?page=' . $page)->getBody()->getContents());
         $characters = [];
+
         foreach ($response->results as $character) {
             $characters[] = $this->createCharacter($character);
         }
+
         $pageInfo = new Page($response->info);
         return ['characters' => $characters, 'page' => $pageInfo];
     }
+
     public function getEpisodes(int $page = 1): array
     {
         $response = json_decode($this->client->get('episode/?page=' . $page)->getBody()->getContents());
@@ -57,6 +60,20 @@ class ApiClient
         return $this->createCharacter($response);
     }
 
+    public function getEpisodesById(array $id): array
+    {
+        $response = json_decode($this->client->get('episode/' . implode(',', $id))->getBody()->getContents());
+        $episodes = [];
+        if (count($id) === 1) {
+            $episodes [] = $this->createEpisode($response);
+        } else {
+            foreach ($response as $episode) {
+                $episodes[] = $this->createEpisode($episode);
+            }
+        }
+        return $episodes;
+    }
+
     public function getSingleEpisode(int $id): Episode
     {
         $response = json_decode($this->client->get('episode/' . $id)->getBody()->getContents());
@@ -67,7 +84,7 @@ class ApiClient
     private function createCharacter(\stdClass $character): Character
     {
         $episodeIds = [];
-        foreach ($character->episode as $episode){
+        foreach ($character->episode as $episode) {
             $episodeIds[] = basename($episode);
         }
         return new Character(

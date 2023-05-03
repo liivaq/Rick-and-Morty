@@ -32,9 +32,10 @@ class Controller
         return new View('locations', $response);
     }
 
-    public function singleCharacter($page = 1): View
+    public function singleCharacter($id = 1): View
     {
-        $response = $this->client->getSingleCharacter($page);
-        return new View('singleCharacter', ['character' => $response]);
+        $character = $this->client->getSingleCharacter($id);
+        $episodes = $this->client->getEpisodesById($character->getEpisodes());
+        return new View('singleCharacter', ['character' => $character, 'episodes' => $episodes]);
     }
 }

@@ -35,8 +35,7 @@ class Router
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 [$controller, $method] = $handler;
-
-                return (new $controller)->{$method}((int)$vars['page']);
+                return (new $controller)->{$method}((int) $vars['page']);
         }
         return null;
     }
