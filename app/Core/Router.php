@@ -13,6 +13,7 @@ class Router
             $r->addRoute('GET', '/characters[/{page}]', ['App\Controllers\Controller', 'characters']);
             $r->addRoute('GET', '/episodes[/{page}]', ['App\Controllers\Controller', 'episodes']);
             $r->addRoute('GET', '/locations[/{page}]', ['App\Controllers\Controller', 'locations']);
+            $r->addRoute('GET', '/character[/{page}]', ['App\Controllers\Controller', 'singleCharacter']);
         });
 
         $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -35,7 +36,7 @@ class Router
                 $vars = $routeInfo[2];
                 [$controller, $method] = $handler;
 
-                return (new $controller)->{$method}($vars['page']);
+                return (new $controller)->{$method}((int)$vars['page']);
         }
         return null;
     }

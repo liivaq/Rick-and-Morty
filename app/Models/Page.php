@@ -6,15 +6,15 @@ class Page
 {
     private int $count;
     private int $pages;
-    private ?string $next;
-    private ?string $previous;
+    private ?int $next;
+    private ?int $prev;
 
     public function __construct(\stdClass $pageInfo)
     {
         $this->count = $pageInfo->count;
         $this->pages = $pageInfo->pages;
-        $this->next = $pageInfo->next;
-        $this->previous = $pageInfo->prev;
+        $this->next = (int)substr($pageInfo->next, strrpos($pageInfo->next, '=') + 1);
+        $this->prev = (int)substr($pageInfo->prev, strrpos($pageInfo->prev, '=') + 1);
     }
 
     public function getCount(): int
@@ -27,13 +27,13 @@ class Page
         return $this->pages;
     }
 
-    public function getNext(): ?string
+    public function getNext(): ?int
     {
-        return $this->next;
+        return $this->next ?? $this->pages;
     }
 
-    public function getPrevious(): ?string
+    public function getPrev(): ?int
     {
-        return $this->previous;
+        return $this->prev ?? 1;
     }
 }

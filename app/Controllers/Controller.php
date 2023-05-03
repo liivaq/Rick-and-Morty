@@ -31,4 +31,10 @@ class Controller
         $response = $this->client->getLocations($page);
         return new View('locations', $response);
     }
+
+    public function singleCharacter($page = 1): View
+    {
+        $response = $this->client->getSingleCharacter($page);
+        return new View('singleCharacter', ['character' => $response]);
+    }
 }

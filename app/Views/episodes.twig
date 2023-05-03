@@ -35,6 +35,11 @@
 
     <div class="max-w-auto mx-auto">
         <ul class="inline-flex flex-wrap justify-center">
+            <a
+                    class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                    href="/episodes/{{ page.prev }}"
+            >Previous</a
+            >
             {% for i in 1..page.pages %}
                 <li>
                     <a
@@ -44,6 +49,11 @@
                     >
                 </li>
             {% endfor %}
+            <a
+                    class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                    href="/episodes/{{ page.next }}"
+            >Next</a
+            >
         </ul>
     </div>
     </div>

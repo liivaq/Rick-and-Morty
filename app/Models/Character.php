@@ -3,6 +3,7 @@
 namespace App\Models;
 class Character
 {
+    private int $id;
     private string $name;
     private string $status;
     private string $species;
@@ -14,6 +15,7 @@ class Character
     private Episode $firstEpisode;
 
     public function __construct(
+        int $id,
         string    $name,
         string    $status,
         string    $species,
@@ -22,9 +24,10 @@ class Character
         string    $image,
         string    $url,
         array     $episodes,
-        Episode   $firstEpisode
+        Episode  $firstEpisode
     )
     {
+        $this->id = $id;
         $this->name = $name;
         $this->status = $status;
         $this->species = $species;
@@ -34,6 +37,11 @@ class Character
         $this->url = $url;
         $this->episodes = $episodes;
         $this->firstEpisode = $firstEpisode;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getName(): string
@@ -71,7 +79,7 @@ class Character
         return $this->url;
     }
 
-    public function getEpisode(): array
+    public function getEpisodes(): array
     {
         return $this->episodes;
     }

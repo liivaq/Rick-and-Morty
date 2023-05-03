@@ -19,7 +19,7 @@ class ApiClient
         ]);
     }
 
-    public function getCharacters($page = 1): array
+    public function getCharacters(int $page = 1): array
     {
         $response = json_decode($this->client->get('character/?page=' . $page)->getBody()->getContents());
         $characters = [];
@@ -29,7 +29,7 @@ class ApiClient
         $pageInfo = new Page($response->info);
         return ['characters' => $characters, 'page' => $pageInfo];
     }
-    public function getEpisodes($page = 1): array
+    public function getEpisodes(int $page = 1): array
     {
         $response = json_decode($this->client->get('episode/?page=' . $page)->getBody()->getContents());
         $episodes = [];
@@ -40,7 +40,7 @@ class ApiClient
         return ['episodes' => $episodes, 'page' => $pageInfo];
     }
 
-    public function getLocations($page = 1): array
+    public function getLocations(int $page = 1): array
     {
         $response = json_decode($this->client->get('location/?page=' . $page)->getBody()->getContents());
         $locations = [];
@@ -51,10 +51,27 @@ class ApiClient
         return ['locations' => $locations, 'page' => $pageInfo];
     }
 
+    public function getSingleCharacter(int $id): Character
+    {
+        $response = json_decode($this->client->get('character/' . $id)->getBody()->getContents());
+        return $this->createCharacter($response);
+    }
+
+    public function getSingleEpisode(int $id): Episode
+    {
+        $response = json_decode($this->client->get('episode/' . $id)->getBody()->getContents());
+        return $this->createEpisode($response);
+    }
+
 
     private function createCharacter(\stdClass $character): Character
     {
+        $episodeIds = [];
+        foreach ($character->episode as $episode){
+            $episodeIds[] = basename($episode);
+        }
         return new Character(
+            $character->id,
             $character->name,
             $character->status,
             $character->species,
@@ -62,17 +79,10 @@ class ApiClient
             $character->location,
             $character->image,
             $character->url,
-            $character->episode,
-            $this->fetchFirstEpisode($character->episode[0])
+            $episodeIds,
+            $this->getSingleEpisode((int)$episodeIds[0])
         );
     }
-
-    private function fetchFirstEpisode(string $episode): Episode
-    {
-        $response = json_decode($this->client->get($episode)->getBody()->getContents());
-        return $this->createEpisode($response);
-    }
-
 
     private function createEpisode(\stdClass $episode): Episode
     {
@@ -95,4 +105,5 @@ class ApiClient
             $episode->residents
         );
     }
+
 }
