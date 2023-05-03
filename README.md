@@ -1,4 +1,4 @@
-# Rick-and-Morty
+# Rick and Morty API
 
 Simple webpage to browse Rick and Morty characters, episodes and locations.
 
