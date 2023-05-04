@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     {% block head %}
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>{% block title %}{% endblock %}Rick and Morty Characters</title>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>{% block title %}{% endblock %}Rick and Morty Characters</title>
     {% endblock %}
 </head>
-<body>
+<body class="bg-gray-100">
 <header>
     <nav
             class="relative flex w-full flex-wrap items-center justify-between bg-neutral-900 py-2 text-neutral-200 shadow-lg lg:flex-wrap lg:justify-start lg:py-4 mb-5"
@@ -53,9 +53,5 @@
 </header>
 
 <div id="content">{% block content %}{% endblock %}</div>
-<div id="footer">
-    {% block footer %}
-    {% endblock %}
-</div>
 </body>
 </html>

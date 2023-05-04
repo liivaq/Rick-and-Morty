@@ -2,59 +2,64 @@
 
 {% block content %}
     <div class="grid h-screen place-items-center">
-    <h2 class="text-4xl font-extrabold dark:text-white">List of Rick and Morty episodes</h2>
-    <div class="flex flex-col content-center">
-        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="inline-flex py-2 sm:px-6 lg:px-8">
-                <div class="overflow-hidden">
-                    <table class="min-w-full text-center text-sm font-light ">
-                        <thead
-                                class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
-                        <tr>
-                            <th scope="col" class=" px-6 py-4">#</th>
-                            <th scope="col" class=" px-6 py-4">Name</th>
-                            <th scope="col" class=" px-6 py-4">Air date</th>
-                            <th scope="col" class=" px-6 py-4">Episode</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for episode in episodes %}
-                            <tr class="border-b dark:border-neutral-500">
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{ episode.id }}</td>
-                                <td class="whitespace-nowrap  px-6 py-4">{{ episode.name }}</td>
-                                <td class="whitespace-nowrap  px-6 py-4">{{ episode.airdate }}</td>
-                                <td class="whitespace-nowrap  px-6 py-4">{{ episode.episode }}</td>
+        <h2 class="text-4xl font-extrabold dark:text-white">List of Rick and Morty episodes</h2>
+        <div class="flex flex-col content-center">
+            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-flex py-2 sm:px-6 lg:px-8">
+                    <div class="overflow-hidden">
+                        <table class="min-w-full text-center text-sm font-light ">
+                            <thead
+                                    class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
+                            <tr>
+                                <th scope="col" class=" px-6 py-4">#</th>
+                                <th scope="col" class=" px-6 py-4">Name</th>
+                                <th scope="col" class=" px-6 py-4">Air date</th>
+                                <th scope="col" class=" px-6 py-4">Episode</th>
+                                <th scope="col" class=" px-6 py-4"></th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {% for episode in episodes %}
+                                <tr class="border-b dark:border-neutral-500">
+                                    <td class="whitespace-nowrap  px-6 py-4 font-medium">{{ episode.id }}</td>
+                                    <td class="whitespace-nowrap  px-6 py-4">{{ episode.name }}</td>
+                                    <td class="whitespace-nowrap  px-6 py-4">{{ episode.airdate }}</td>
+                                    <td class="whitespace-nowrap  px-6 py-4">{{ episode.episode }}</td>
+                                    <td class="whitespace-nowrap  px-6 py-4">
+                                        <a href="/episode/{{ episode.id }}"
+                                           class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                            See More
+                                        </a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="max-w-auto mx-auto">
-        <ul class="inline-flex flex-wrap justify-center">
-            <a
-                    class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                    href="/episodes/{{ page.prev }}"
-            >Previous</a
-            >
-            {% for i in 1..page.pages %}
-                <li>
-                    <a
-                            class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                            href="/episodes/{{ i }}"
-                    >{{ i }}</a
-                    >
-                </li>
-            {% endfor %}
-            <a
-                    class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                    href="/episodes/{{ page.next }}"
-            >Next</a
-            >
-        </ul>
-    </div>
+        <div class="max-w-auto mx-auto pb-5 pt-5">
+            <ul class="inline-flex flex-wrap justify-center">
+                <a
+                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                        href="/episodes/{{ page.prev }}"
+                ><<</a
+                >
+                {% for i in 1..page.pages %}
+                    <li>
+                        <a
+                                class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                                href="/episodes/{{ i }}"
+                        >{{ i }}</a
+                        >
+                    </li>
+                {% endfor %}
+                <a
+                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                        href="/episodes/{{ page.next }}"
+                >>></a>
+            </ul>
+        </div>
     </div>
 {% endblock %}

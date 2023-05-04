@@ -2,73 +2,73 @@
 
 {% block content %}
     <div class="grid h-screen place-items-center">
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full p-6">
-    {% for character in characters %}
-        <a href="/character/{{ character.id }}">
-        <div class="flex flex-col xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden">
-            <img
-                    class="object-cover w-200 h-48"
-                    src="{{ character.image }}"
-                    alt="{{ character.name }}"
-            >
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full p-6">
+            {% for character in characters %}
+                <a href="/character/{{ character.id }}">
+                    <div class="flex flex-col xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden">
+                        <img
+                                class="object-cover w-200 h-48"
+                                src="{{ character.image }}"
+                                alt="{{ character.name }}"
+                        >
 
-            <div class="relative p-4">
-                <h3 class="text-base md:text-xl font-medium text-gray-800">
-                    {{ character.name }}
-                </h3>
+                        <div class="relative p-4">
+                            <h3 class="text-base md:text-xl font-medium text-gray-800">
+                                {{ character.name }}
+                            </h3>
 
-                <ul>
-                    {% if character.status == 'Dead' %}
-                        <h2 class="bg-red-500 text-white font-bold rounded px-4 py-1 w-1/2">
-                            Dead
-                        </h2>
-                    {% elseif character.status == 'Alive' %}
-                        <h2 class="bg-green-500 text-white font-bold rounded px-4 py-1 w-1/2">
-                            Alive
-                        </h2>
-                    {% else%}
-                        <h2 class="bg-gray-500 text-white font-bold rounded px-4 py-1 w-1/2">
-                            Unknown
-                        </h2>
-                    {% endif %}
-                    <li><strong>Species:</strong>
-                        {{ character.species }}
-                    </li>
-                    <li><strong>Last known location:</strong>
-                        {{ character.location.name }}
-                    </li>
-                    <li><strong>First seen in:</strong>
-                        {{ character.firstepisode.name }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        </a>
-    {% endfor %}
-</div>
-<div class="max-w-auto mx-auto">
-        <ul class="inline-flex flex-wrap justify-center">
-            <a
-                    class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                    href="/characters/{{ page.prev }}"
-            >Previous</a
-            >
-            {% for i in 1..page.pages%}
-                <li>
-                    <a
-                            class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                            href="/characters/{{ i }}"
-                    >{{ i }}</a
-                    >
-                </li>
+                            <ul>
+                                {% if character.status == 'Dead' %}
+                                    <h2 class="bg-red-500 text-white font-bold rounded px-4 py-1 w-1/2">
+                                        Dead
+                                    </h2>
+                                {% elseif character.status == 'Alive' %}
+                                    <h2 class="bg-green-500 text-white font-bold rounded px-4 py-1 w-1/2">
+                                        Alive
+                                    </h2>
+                                {% else %}
+                                    <h2 class="bg-gray-500 text-white font-bold rounded px-4 py-1 w-1/2">
+                                        Unknown
+                                    </h2>
+                                {% endif %}
+                                <li><strong>Species:</strong>
+                                    {{ character.species }}
+                                </li>
+                                <li><strong>Last known location:</strong>
+                                    {{ character.location.name }}
+                                </li>
+                                <li><strong>First seen in:</strong>
+                                    {{ character.firstepisode.name }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </a>
             {% endfor %}
-            <a
-                    class="border border-gray-300 relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                    href="/characters/{{ page.next }}"
-            >Next</a
-            >
-        </ul>
-</div>
+        </div>
+        <div class="max-w-auto mx-auto pb-5 pt-5">
+            <ul class="inline-flex flex-wrap justify-center">
+                <a
+                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                        href="/characters/{{ page.prev }}"
+                ><<</a
+                >
+                {% for i in 1..page.pages %}
+                    <li>
+                        <a
+                                class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                                href="/characters/{{ i }}"
+                        >{{ i }}</a
+                        >
+                    </li>
+                {% endfor %}
+                <a
+                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
+                        href="/characters/{{ page.next }}"
+                >>></a
+                >
+            </ul>
+        </div>
     </div>
 
 {% endblock %}

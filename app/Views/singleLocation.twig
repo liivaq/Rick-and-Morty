@@ -1,0 +1,66 @@
+{% extends "template.twig" %}
+{% block content %}
+    <div class="bg-gray-100">
+    <div class="container mx-auto my-5 p-5">
+        <div class="md:flex no-wrap md:-mx-2 ">
+            <!-- Left Side -->
+            <div class="w-full md:w-3/12 md:mx-2">
+                <!-- Profile Card -->
+                <div class="bg-white p-3 border-t-4 border-black">
+                    <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">{{ location.name }}</h1>
+                    <h3 class="text-gray-600 font-lg text-semibold leading-6"></h3>
+
+                    <ul class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
+                        <li class="flex items-center py-3">
+                            <span class="mr-12">Type:</span>
+                            <span class="ml-auto">{{ location.type }}</span>
+                        </li>
+                        <li class="flex items-center py-3">
+                            <span class="mr-12">Dimension:</span>
+                            <span class="ml-auto">{{ location.dimension }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End of profile card -->
+                <div class="my-4"></div>
+
+            </div>
+            <!-- Right Side -->
+            <div class="w-full md:w-9/12 mx-2 h-64">
+                <!-- Profile tab -->
+                <!-- About Section -->
+
+                <div class="bg-white p-3 shadow-sm rounded-sm">
+                    <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                        <span class="tracking-wide">Characters residing in this location</span>
+                    </div>
+                    <div class="text-gray-700">
+                        <div class="grid md:grid-cols-1 pt-3">
+                            <table class="table-auto ">
+                                <tbody>
+                                {% if characters is empty %}
+                                    <h1>There are no characters residing in this location</h1>
+                                {% endif %}
+                                {% for character in characters %}
+                                    <tr class="border-b border-gray-300">
+                                        <td class=""><img width="100" src="{{ character.image }}"
+                                                          alt="{{ character.name }}"></td>
+                                        <td><a href="/character/{{ character.id }}">{{ character.name }}</a></td>
+                                        <td class="whitespace-nowrap  px-6 py-4">
+                                            <a href="/character/{{ character.id }}"
+                                               class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                                See More
+                                            </a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End of profile tab -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

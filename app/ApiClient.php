@@ -54,13 +54,30 @@ class ApiClient
         return ['locations' => $locations, 'page' => $pageInfo];
     }
 
-    public function getSingleCharacter(int $id): Character
+    public function getCharactersById(?array $id): ?array
+    {
+        if(!$id){
+            return null;
+        }
+        $response = json_decode($this->client->get('character/' . implode(',', $id))->getBody()->getContents());
+        $characters = [];
+        if (count($id) === 1) {
+            $characters [] = $this->createCharacter($response);
+        }else {
+            foreach ($response as $character) {
+                $characters[] = $this->createCharacter($character);
+            }
+        }
+        return $characters;
+    }
+
+    public function getSingleCharacter(int $id = 1): Character
     {
         $response = json_decode($this->client->get('character/' . $id)->getBody()->getContents());
         return $this->createCharacter($response);
     }
 
-    public function getEpisodesById(array $id): array
+    public function getEpisodesById(array $id = [1]): array
     {
         $response = json_decode($this->client->get('episode/' . implode(',', $id))->getBody()->getContents());
         $episodes = [];
@@ -80,6 +97,11 @@ class ApiClient
         return $this->createEpisode($response);
     }
 
+    public function getSingleLocation(int $id = 1): Location
+    {
+        $response = json_decode($this->client->get('location/' . $id)->getBody()->getContents());
+        return $this->createLocation($response);
+    }
 
     private function createCharacter(\stdClass $character): Character
     {
@@ -103,24 +125,35 @@ class ApiClient
 
     private function createEpisode(\stdClass $episode): Episode
     {
+        $characterIds = [];
+        foreach ($episode->characters as $character) {
+            $characterIds[] = basename($character);
+        }
         return new Episode(
             $episode->id,
             $episode->name,
             $episode->air_date,
             $episode->episode,
-            $episode->characters
+            $characterIds
         );
     }
 
     private function createLocation(\stdClass $episode): Location
     {
+        $characterIds = [];
+        if(empty($episode->residents)){
+            $characterIds = null;
+        }else {
+            foreach ($episode->residents as $character) {
+                $characterIds[] = basename($character);
+            }
+        }
         return new Location(
             $episode->id,
             $episode->name,
             $episode->type,
             $episode->dimension,
-            $episode->residents
+            $characterIds
         );
     }
-
 }

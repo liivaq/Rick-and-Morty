@@ -77,6 +77,11 @@
                                     <td class="pl-5">{{ episode.name }}</td>
                                     <td>{{ episode.episode }}</td>
                                     <td>{{ episode.airdate }}</td>
+                                    <td class="whitespace-nowrap  px-6 py-4">
+                                        <a href="/episode/{{ episode.id }}"
+                                           class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                            See More
+                                        </a></td>
                                 </tr>
                                 {% endfor %}
                                 </tbody>

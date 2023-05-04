@@ -38,4 +38,18 @@ class Controller
         $episodes = $this->client->getEpisodesById($character->getEpisodes());
         return new View('singleCharacter', ['character' => $character, 'episodes' => $episodes]);
     }
+
+    public function episodesById($page = 1): View
+    {
+        $episode = $this->client->getSingleEpisode($page);
+        $characters = $this->client->getCharactersById($episode->getCharacters());
+        return new View('singleEpisode', ['episode' => $episode, 'characters' => $characters]);
+    }
+
+    public function singleLocation($id = 1): View
+    {
+        $location = $this->client->getSingleLocation($id);
+        $characters = $this->client->getCharactersById($location->getCharacters());
+        return new View('singleLocation', ['location' => $location, 'characters' => $characters]);
+    }
 }
