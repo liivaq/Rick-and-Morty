@@ -50,21 +50,21 @@
             <ul class="inline-flex flex-wrap justify-center">
                 <a
                         class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                        href="/characters/{{ page.prev }}"
+                        href="characters/{{ page.prev }}"
                 ><<</a
                 >
                 {% for i in 1..page.pages %}
                     <li>
                         <a
                                 class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                                href="/characters/{{ i }}"
+                                href="characters/{{ i }}"
                         >{{ i }}</a
                         >
                     </li>
                 {% endfor %}
                 <a
                         class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                        href="/characters/{{ page.next }}"
+                        href="characters/{{ page.next }}"
                 >>></a
                 >
             </ul>
