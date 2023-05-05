@@ -13,8 +13,9 @@ Simple webpage to browse Rick and Morty characters, episodes and locations.
 # Preview:
 
 1. Browse all characters
-![image](https://user-images.githubusercontent.com/123387229/235891005-6808617d-6cf1-46d5-99b1-7dac75c7a5a5.png)
+![Screenshot from 2023-05-04 13-14-17](https://user-images.githubusercontent.com/123387229/236178987-32196684-6746-4d57-853d-ffe241ac019b.png)
+
 
 2. Explore each character
-![image](https://user-images.githubusercontent.com/123387229/236011107-16fe0439-82e7-4475-b0f7-efd4f62f36df.png)
+![Screenshot from 2023-05-04 13-14-42](https://user-images.githubusercontent.com/123387229/236178620-2e32da81-623b-4712-b8c5-94ab240ee7c5.png)
 
