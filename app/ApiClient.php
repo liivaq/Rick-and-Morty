@@ -20,63 +20,85 @@ class ApiClient
         ]);
     }
 
-    public function getCharacters(int $page, string $search): ?array
+    public function getCharacters(int $page, string $search): array
     {
         try {
-            $response = json_decode($this->client->get('character/', [
-                'query' => [
-                    'name' => $search,
-                    'page' => $page,
-                ]
-            ])->getBody()->getContents());
-            $characters = [];
-            foreach ($response->results as $character) {
-                $characters[] = $this->createCharacter($character);
+
+            if(!Cache::has('characters_'.$page)){
+                $response = $this->client->get('character/', [
+                    'query' => [
+                        'name' => $search,
+                        'page' => $page,
+                    ]
+                ]);
+                $responseJson = $response->getBody()->getContents();
+                Cache::save('characters_'.$page, $responseJson);
+            }else{
+                $responseJson = Cache::get('characters_'.$page);
             }
-            $pageInfo = new Page($response->info);
-            return ['characters' => $characters, 'page' => $pageInfo];
+
+            $characters = json_decode($responseJson);
+            $characterCollection = [];
+            foreach ($characters->results as $character) {
+                $characterCollection[] = $this->createCharacter($character);
+            }
+            $pageInfo = new Page($characters->info);
+            return ['characters' => $characterCollection, 'page' => $pageInfo];
         } catch (GuzzleException $e) {
-            $e->getMessage();
+            return [];
         }
-        return null;
     }
 
-    public function getEpisodes(int $page): ?array
+    public function getEpisodes(int $page): array
     {
         try {
-            $response = json_decode($this->client->get('episode/?page=' . $page)->getBody()->getContents());
-            $episodes = [];
-            foreach ($response->results as $episode) {
-                $episodes[] = $this->createEpisode($episode);
+            if(!Cache::has('episodes_'.$page)){
+                $response = $this->client->get('episode/?page=' . $page);
+                $responseJson = $response->getBody()->getContents() ;
+                Cache::save('episodes_'.$page, $responseJson);
+            }else{
+                $responseJson = Cache::get('episodes_'.$page);
             }
-            $pageInfo = new Page($response->info);
-            return ['episodes' => $episodes, 'page' => $pageInfo];
+
+            $episodes = json_decode($responseJson);
+            $episodeCollection = [];
+            foreach ($episodes->results as $episode) {
+                $episodeCollection[] = $this->createEpisode($episode);
+            }
+            $pageInfo = new Page($episodes->info);
+            return ['episodes' => $episodeCollection, 'page' => $pageInfo];
         } catch (GuzzleException $e) {
-            $e->getMessage();
+            return [];
         }
-        return null;
     }
 
-    public function getLocations(int $page): ?array
+    public function getLocations(int $page): array
     {
         try {
-            $response = json_decode($this->client->get('location/?page=' . $page)->getBody()->getContents());
-            $locations = [];
-            foreach ($response->results as $location) {
-                $locations[] = $this->createLocation($location);
+            if(!Cache::has('locations_'.$page)){
+                $response = $this->client->get('location/?page=' . $page);
+                $responseJson = $response->getBody()->getContents() ;
+                Cache::save('locations_'.$page, $responseJson);
+            }else{
+                $responseJson = Cache::get('locations_'.$page);
             }
-            $pageInfo = new Page($response->info);
-            return ['locations' => $locations, 'page' => $pageInfo];
+
+            $locations = json_decode($responseJson);
+            $locationCollection = [];
+            foreach ($locations->results as $location) {
+                $locationCollection[] = $this->createLocation($location);
+            }
+            $pageInfo = new Page($locations->info);
+            return ['locations' => $locationCollection, 'page' => $pageInfo];
         } catch (GuzzleException $e) {
-            $e->getMessage();
+            return [];
         }
-        return null;
     }
 
-    public function getCharactersById(array $id): ?array
+    public function getCharactersById(?array $id): array
     {
         if (!$id) {
-            return null;
+            return [];
         }
 
         try {
@@ -92,23 +114,29 @@ class ApiClient
             }
             return $characters;
         } catch (GuzzleException $e) {
-            $e->getMessage();
+            return [];
         }
-        return null;
     }
 
     public function getSingleCharacter(int $id): ?Character
     {
         try {
-            $response = json_decode($this->client->get('character/' . $id)->getBody()->getContents());
-            return $this->createCharacter($response);
+            if(!Cache::has('character_'.$id)){
+                $response = $this->client->get('character/' . $id);
+                $responseJson = $response->getBody()->getContents() ;
+                Cache::save('character_'.$id, $responseJson);
+            }else{
+                $responseJson = Cache::get('character_'.$id);
+            }
+
+            return $this->createCharacter(json_decode($responseJson));
+
         } catch (GuzzleException $e) {
-            $e->getMessage();
+            return null;
         }
-        return null;
     }
 
-    public function getEpisodesById(array $id): ?array
+    public function getEpisodesById(array $id): array
     {
         try {
             $response = json_decode($this->client->get(
@@ -123,31 +151,41 @@ class ApiClient
             }
             return $episodes;
         } catch (GuzzleException $e) {
-            $e->getMessage();
+            return [];
         }
-        return null;
     }
 
     public function getSingleEpisode(int $id): ?Episode
     {
         try {
-            $response = json_decode($this->client->get('episode/' . $id)->getBody()->getContents());
-            return $this->createEpisode($response);
+            if(!Cache::has('episode_'.$id)){
+                $response = $this->client->get('episode/' . $id);
+                $responseJson = $response->getBody()->getContents() ;
+                Cache::save('episode_'.$id, $responseJson);
+            }else{
+                $responseJson = Cache::get('episode_'.$id);
+            }
+
+            return $this->createEpisode(json_decode($responseJson));
         } catch (GuzzleException $e) {
-            $e->getMessage();
+            return null;
         }
-        return null;
     }
 
     public function getSingleLocation(int $id): ?Location
     {
         try {
-            $response = json_decode($this->client->get('location/' . $id)->getBody()->getContents());
-            return $this->createLocation($response);
+            if(!Cache::has('location_'.$id)){
+                $response = $this->client->get('location/' . $id);
+                $responseJson = $response->getBody()->getContents() ;
+                Cache::save('location_'.$id, $responseJson);
+            }else{
+                $responseJson = Cache::get('location_'.$id);
+            }
+            return $this->createLocation(json_decode($responseJson));
         } catch (GuzzleException $e) {
-            $e->getMessage();
+            return null;
         }
-        return null;
     }
 
     private function createCharacter(\stdClass $character): Character

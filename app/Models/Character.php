@@ -15,7 +15,7 @@ class Character
     private Episode $firstEpisode;
 
     public function __construct(
-        int $id,
+        int       $id,
         string    $name,
         string    $status,
         string    $species,
@@ -24,7 +24,7 @@ class Character
         string    $image,
         string    $url,
         array     $episodes,
-        Episode  $firstEpisode
+        Episode   $firstEpisode
     )
     {
         $this->id = $id;

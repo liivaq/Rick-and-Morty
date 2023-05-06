@@ -9,13 +9,13 @@ class Router
     public static function route()
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-            $r->addRoute('GET', '/', ['App\Controllers\Controller', 'characters']);
-            $r->addRoute('GET', '/characters[/{page}]', ['App\Controllers\Controller', 'characters']);
-            $r->addRoute('GET', '/episodes[/{page}]', ['App\Controllers\Controller', 'episodes']);
-            $r->addRoute('GET', '/locations[/{page}]', ['App\Controllers\Controller', 'locations']);
-            $r->addRoute('GET', '/character[/{page}]', ['App\Controllers\Controller', 'singleCharacter']);
-            $r->addRoute('GET', '/episode[/{page}]', ['App\Controllers\Controller', 'singleEpisode']);
-            $r->addRoute('GET', '/location[/{page}]', ['App\Controllers\Controller', 'singleLocation']);
+            $r->addRoute('GET', '/', ['App\Controllers\CharacterController', 'characters']);
+            $r->addRoute('GET', '/characters[/{page}]', ['App\Controllers\CharacterController', 'characters']);
+            $r->addRoute('GET', '/episodes[/{page}]', ['App\Controllers\EpisodeController', 'episodes']);
+            $r->addRoute('GET', '/locations[/{page}]', ['App\Controllers\LocationController', 'locations']);
+            $r->addRoute('GET', '/character[/{page}]', ['App\Controllers\CharacterController', 'singleCharacter']);
+            $r->addRoute('GET', '/episode[/{page}]', ['App\Controllers\EpisodeController', 'singleEpisode']);
+            $r->addRoute('GET', '/location[/{page}]', ['App\Controllers\LocationController', 'singleLocation']);
         });
 
         $httpMethod = $_SERVER['REQUEST_METHOD'];
