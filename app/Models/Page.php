@@ -15,10 +15,6 @@ class Page
         $this->pages = $pageInfo->pages;
         $this->next = $pageInfo->next;
         $this->prev = $pageInfo->prev;
-
-        //$this->next = substr($pageInfo->next, strrpos($pageInfo->next, '=') + 1)
-
-        //$this->prev = substr($pageInfo->prev, strrpos($pageInfo->prev, '=') + 1);
     }
 
     public function getCount(): int
@@ -36,7 +32,10 @@ class Page
         if(!$this->next){
             return $this->pages;
         }
-        return (int)substr($this->next, strrpos($this->next, '=') + 1);
+        $query = parse_url($this->next, PHP_URL_QUERY); // Get the query string
+        parse_str($query, $params); // Parse the query string into an array
+
+        return (int )$params['page'];
 
     }
 
@@ -45,6 +44,9 @@ class Page
         if(!$this->prev){
             return 1;
         }
-        return (int)substr($this->prev, strrpos($this->prev, '=') + 1);
+        $query = parse_url($this->prev, PHP_URL_QUERY); // Get the query string
+        parse_str($query, $params); // Parse the query string into an array
+
+        return (int )$params['page'];
     }
 }
