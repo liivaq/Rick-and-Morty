@@ -44,8 +44,8 @@ class Page
         if(!$this->prev){
             return 1;
         }
-        $query = parse_url($this->prev, PHP_URL_QUERY); // Get the query string
-        parse_str($query, $params); // Parse the query string into an array
+        $query = parse_url($this->prev, PHP_URL_QUERY);
+        parse_str($query, $params);
 
         return (int )$params['page'];
     }

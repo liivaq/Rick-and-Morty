@@ -70,13 +70,10 @@
                 class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
             First Page
         </a>
-        {% set current = page.next - 1 %}
-        {% set perPage = current+10 %}
-        {% if perPage >= page.pages %}
-            {% set perPage = page.pages %}
-        {% endif %}
+        {% set start = max(1, currentPage-5) %}
+        {% set end = min(page.pages, currentPage+5) %}
 
-        {% for i in current..perPage %}
+        {% for i in start..end %}
             <a
                     {% if name is empty %}
                         href="/characters/{{ i }}"
@@ -97,7 +94,7 @@
             class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
         Last Page
     </a>
-    <small>Page {{ current }} / {{ page.pages }}</small>
+    <small>Page {{ currentPage }} / {{ page.pages }}</small>
     </div>
     </div>
 {% endblock %}

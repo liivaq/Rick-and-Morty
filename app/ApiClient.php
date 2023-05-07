@@ -44,7 +44,10 @@ class ApiClient
                 $characterCollection[] = $this->createCharacter($character);
             }
             $pageInfo = new Page($characters->info);
-            return ['characters' => $characterCollection, 'page' => $pageInfo, 'name' => $name];
+            return ['characters' => $characterCollection,
+                'currentPage' => $page,
+                'page' => $pageInfo,
+                'name' => $name];
         } catch (GuzzleException $exception) {
             return [];
         }
