@@ -23,18 +23,18 @@ class ApiClient
     public function getCharacters(int $page, string $search): array
     {
         try {
-
-            if(!Cache::has('characters_'.$page)){
+            if(!Cache::has('characters_'.$search.'_'.$page)){
                 $response = $this->client->get('character/', [
                     'query' => [
                         'name' => $search,
                         'page' => $page,
                     ]
                 ]);
+
                 $responseJson = $response->getBody()->getContents();
-                Cache::save('characters_'.$page, $responseJson);
+                Cache::save('characters_'.$search.'_'.$page, $responseJson);
             }else{
-                $responseJson = Cache::get('characters_'.$page);
+                $responseJson = Cache::get('characters_'.$search.'_'.$page);
             }
 
             $characters = json_decode($responseJson);
@@ -43,8 +43,8 @@ class ApiClient
                 $characterCollection[] = $this->createCharacter($character);
             }
             $pageInfo = new Page($characters->info);
-            return ['characters' => $characterCollection, 'page' => $pageInfo];
-        } catch (GuzzleException $e) {
+            return ['characters' => $characterCollection, 'page' => $pageInfo, 'name' => $search];
+        } catch (GuzzleException $exception) {
             return [];
         }
     }
@@ -67,7 +67,7 @@ class ApiClient
             }
             $pageInfo = new Page($episodes->info);
             return ['episodes' => $episodeCollection, 'page' => $pageInfo];
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException $exception) {
             return [];
         }
     }
@@ -90,7 +90,7 @@ class ApiClient
             }
             $pageInfo = new Page($locations->info);
             return ['locations' => $locationCollection, 'page' => $pageInfo];
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException $exception) {
             return [];
         }
     }
@@ -113,7 +113,7 @@ class ApiClient
                 }
             }
             return $characters;
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException $exception) {
             return [];
         }
     }
@@ -131,7 +131,7 @@ class ApiClient
 
             return $this->createCharacter(json_decode($responseJson));
 
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException $exception) {
             return null;
         }
     }
@@ -150,7 +150,7 @@ class ApiClient
                 }
             }
             return $episodes;
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException $exception) {
             return [];
         }
     }
@@ -167,7 +167,7 @@ class ApiClient
             }
 
             return $this->createEpisode(json_decode($responseJson));
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException $exception) {
             return null;
         }
     }
@@ -183,7 +183,7 @@ class ApiClient
                 $responseJson = Cache::get('location_'.$id);
             }
             return $this->createLocation(json_decode($responseJson));
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException $exception) {
             return null;
         }
     }

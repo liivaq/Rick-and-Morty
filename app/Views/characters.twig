@@ -16,7 +16,7 @@
             </div>
         </div>
     {% else %}
-    <div class="grid h-screen place-items-center">
+        <div class="grid h-screen place-items-center">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full p-6">
             {% for character in characters %}
                 <a href="/character/{{ character.id }}">
@@ -72,7 +72,12 @@
                     <li>
                         <a
                                 class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                                href="/characters/{{ i }}"
+                                {% if name is empty %}
+                                    href="/characters/{{ i }}"
+                                {% else %}
+                                    href="/characters/{{ i }}/{{ name }}"
+                                {% endif %}
+
                         >{{ i }}</a
                         >
                     </li>
@@ -84,7 +89,7 @@
                 >
             </ul>
         </div>
-        {% endif %}
+    {% endif %}
     </div>
 
 {% endblock %}

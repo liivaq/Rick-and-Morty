@@ -17,7 +17,7 @@ class CharacterController
     public function characters(array $vars): View
     {
         $page = $vars['page'] ?? 1;
-        $name = $_GET['name'] ?? '';
+        $name = $vars['name'] ?? $_GET['name'] ?? '';
         $response = $this->client->getCharacters((int)$page, $name);
         return new View('characters', $response);
     }
@@ -32,5 +32,4 @@ class CharacterController
         $episodes = $this->client->getEpisodesById($character->getEpisodes());
         return new View('singleCharacter', ['character' => $character, 'episodes' => $episodes]);
     }
-
 }

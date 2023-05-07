@@ -10,7 +10,7 @@ class Router
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
             $r->addRoute('GET', '/', ['App\Controllers\CharacterController', 'characters']);
-            $r->addRoute('GET', '/characters[/{page}]', ['App\Controllers\CharacterController', 'characters']);
+            $r->addRoute('GET', '/characters/{page}[/{name}]', ['App\Controllers\CharacterController', 'characters']);
             $r->addRoute('GET', '/episodes[/{page}]', ['App\Controllers\EpisodeController', 'episodes']);
             $r->addRoute('GET', '/locations[/{page}]', ['App\Controllers\LocationController', 'locations']);
             $r->addRoute('GET', '/character[/{page}]', ['App\Controllers\CharacterController', 'singleCharacter']);
@@ -31,6 +31,7 @@ class Router
         $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
         switch ($routeInfo[0]) {
             case FastRoute\Dispatcher::NOT_FOUND:
+
                 return new View('notFound', []);
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
