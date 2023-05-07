@@ -29,6 +29,7 @@
                                 <th scope="col" class=" px-6 py-4">#</th>
                                 <th scope="col" class=" px-6 py-4">Name</th>
                                 <th scope="col" class=" px-6 py-4">Air date</th>
+                                <th scope="col" class=" px-6 py-4">Season</th>
                                 <th scope="col" class=" px-6 py-4">Episode</th>
                                 <th scope="col" class=" px-6 py-4"></th>
                             </tr>
@@ -39,7 +40,8 @@
                                     <td class="whitespace-nowrap  px-6 py-4 font-medium">{{ episode.id }}</td>
                                     <td class="whitespace-nowrap  px-6 py-4">{{ episode.name }}</td>
                                     <td class="whitespace-nowrap  px-6 py-4">{{ episode.airdate }}</td>
-                                    <td class="whitespace-nowrap  px-6 py-4">{{ episode.episode }}</td>
+                                    <td class="whitespace-nowrap  px-6 py-4">{{ episode.episode[2:1]}}</td>
+                                    <td class="whitespace-nowrap  px-6 py-4">{{ episode.episode[4:] }}</td>
                                     <td class="whitespace-nowrap  px-6 py-4">
                                         <a href="/episode/{{ episode.id }}"
                                            class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
@@ -54,27 +56,30 @@
             </div>
         </div>
 
-        <div class="max-w-auto mx-auto pb-5 pt-5">
-            <ul class="inline-flex flex-wrap justify-center">
-                <a
-                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                        href="/episodes/{{ page.prev }}"
-                ><<</a
-                >
-                {% for i in 1..page.pages %}
-                    <li>
-                        <a
-                                class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                                href="/episodes/{{ i }}"
-                        >{{ i }}</a
-                        >
-                    </li>
-                {% endfor %}
-                <a
-                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                        href="/episodes/{{ page.next }}"
-                >>></a>
-            </ul>
+        <div class="flex items-center space-x-1 pb-5 ">
+            <a href="/episodes/{{ page.prev }}"
+               class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+                </svg>
+            </a>
+            {% set current = page.next-1 %}
+            {% for i in 1..page.pages %}
+                <a href="/episodes/{{ i }}"
+                   class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white">
+                    {{ i }}
+                </a>
+            {% endfor %}
+            <a href="/episodes/{{ page.next }}"
+               class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </a>
         </div>
     </div>
     {% endif %}

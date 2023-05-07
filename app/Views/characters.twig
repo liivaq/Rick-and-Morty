@@ -61,35 +61,34 @@
                 </a>
             {% endfor %}
         </div>
-        <div class="max-w-auto mx-auto pb-5 pt-5">
-            <ul class="inline-flex flex-wrap justify-center">
-                <a
-                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                        href="/characters/{{ page.prev }}"
-                ><<</a
-                >
-                {% for i in 1..page.pages %}
-                    <li>
-                        <a
-                                class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                                {% if name is empty %}
-                                    href="/characters/{{ i }}"
-                                {% else %}
-                                    href="/characters/{{ i }}/{{ name }}"
-                                {% endif %}
+        <div class="flex items-center space-x-1 pb-5 ">
+        <a href="/characters/1"
+           class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+            First Page
+        </a>
+        {% set current = page.next - 1 %}
+        {% set perPage = current+10 %}
+        {% if perPage >= page.pages %}
+            {% set perPage = page.pages %}
+        {% endif %}
 
-                        >{{ i }}</a
-                        >
-                    </li>
-                {% endfor %}
-                <a
-                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                        href="/characters/{{ page.next }}"
-                >>></a
-                >
-            </ul>
-        </div>
+        {% for i in current..perPage %}
+            <a
+                    {% if name is empty %}
+                        href="/characters/{{ i }}"
+                    {% else %}
+                        href="/characters/{{ i }}/{{ name }}"
+                    {% endif %}
+                    class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white">
+                {{ i }}
+            </a>
+        {% endfor %}
     {% endif %}
+    <a href="/characters/{{ page.pages }}"
+       class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+        Last Page
+    </a>
+    <small>Page {{ current }} / {{ page.pages }}</small>
     </div>
-
+    </div>
 {% endblock %}

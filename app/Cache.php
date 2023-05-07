@@ -9,9 +9,8 @@ class Cache
     public static function save(string $key, string $data, int $ttl = 120): void
     {
         $cacheFile = '../cache/' . $key;
-        $time = Carbon::now('Europe/Helsinki')->addSeconds($ttl);
         file_put_contents($cacheFile, json_encode([
-            'expires_at' => $time->toTimeString(),
+            'expires_at' => Carbon::now()->addSeconds($ttl),
             'content' => $data
         ]));
     }

@@ -2,80 +2,83 @@
 
 {% block content %}
     {% if locations is empty %}
-    <div class="bg-indigo-900 relative overflow-hidden h-screen">
-        <img src="https://i.pinimg.com/originals/e2/fb/0b/e2fb0b2ac9b7e82275eacc8c2ee9c846.jpg"
-             class="absolute h-full w-full object-cover" alt="rick-and-morty background image"/>
-        <div class="inset-0 bg-black opacity-25 absolute">
-        </div>
-        <div class="container mx-auto px-6 md:px-12 relative z-10 flex items-center py-32 xl:py-40">
-            <div class="w-full font-mono flex flex-col items-center relative z-10">
-                <h1 class="font-extrabold text-5xl text-center text-white leading-tight mt-4">
-                    Sorry, no locations found!
-                </h1>
+        <div class="bg-indigo-900 relative overflow-hidden h-screen">
+            <img src="https://i.pinimg.com/originals/e2/fb/0b/e2fb0b2ac9b7e82275eacc8c2ee9c846.jpg"
+                 class="absolute h-full w-full object-cover" alt="rick-and-morty background image"/>
+            <div class="inset-0 bg-black opacity-25 absolute">
             </div>
-        </div>
-    </div>
-    {% else %}
-    <div class="grid h-screen place-items-center mt-5">
-        <h2 class="text-4xl font-extrabold dark:text-white">List of locations in Rick and Morty universe</h2>
-        <div class="flex flex-col">
-            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                    <div class="overflow-hidden">
-                        <table class="min-w-full text-center text-sm font-light">
-                            <thead
-                                    class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
-                            <tr>
-                                <th scope="col" class=" px-6 py-4">#</th>
-                                <th scope="col" class=" px-6 py-4">Name</th>
-                                <th scope="col" class=" px-6 py-4">Type</th>
-                                <th scope="col" class=" px-6 py-4">Dimension</th>
-                                <th scope="col" class=" px-6 py-4"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for location in locations %}
-                                <tr class="border-b dark:border-neutral-500">
-                                    <td class="whitespace-nowrap  px-6 py-4 font-medium">{{ location.id }}</td>
-                                    <td class="whitespace-nowrap  px-6 py-4">{{ location.name }}</td>
-                                    <td class="whitespace-nowrap  px-6 py-4">{{ location.type }}</td>
-                                    <td class="whitespace-nowrap  px-6 py-4">{{ location.dimension }}</td>
-                                    <td class="whitespace-nowrap  px-6 py-4">
-                                        <a href="/location/{{ location.id }}"
-                                           class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                            See More
-                                        </a></td>
-                                </tr>
-                            {% endfor %}
-
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="container mx-auto px-6 md:px-12 relative z-10 flex items-center py-32 xl:py-40">
+                <div class="w-full font-mono flex flex-col items-center relative z-10">
+                    <h1 class="font-extrabold text-5xl text-center text-white leading-tight mt-4">
+                        Sorry, no locations found!
+                    </h1>
                 </div>
             </div>
         </div>
-        <div class="max-w-auto mx-auto pb-5 pt-5">
-            <ul class="inline-flex flex-wrap justify-center">
-                <a
-                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                        href="/locations/{{ page.prev }}"
-                ><<</a
-                >
+    {% else %}
+        <div class="grid h-screen place-items-center mt-5">
+            <h2 class="text-4xl font-extrabold dark:text-white">List of locations in Rick and Morty universe</h2>
+            <div class="flex flex-col">
+                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                        <div class="overflow-hidden">
+                            <table class="min-w-full text-center text-sm font-light">
+                                <thead
+                                        class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
+                                <tr>
+                                    <th scope="col" class=" px-6 py-4">#</th>
+                                    <th scope="col" class=" px-6 py-4">Name</th>
+                                    <th scope="col" class=" px-6 py-4">Type</th>
+                                    <th scope="col" class=" px-6 py-4">Dimension</th>
+                                    <th scope="col" class=" px-6 py-4"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for location in locations %}
+                                    <tr class="border-b dark:border-neutral-500">
+                                        <td class="whitespace-nowrap  px-6 py-4 font-medium">{{ location.id }}</td>
+                                        <td class="whitespace-nowrap  px-6 py-4">{{ location.name }}</td>
+                                        <td class="whitespace-nowrap  px-6 py-4">{{ location.type }}</td>
+                                        <td class="whitespace-nowrap  px-6 py-4">{{ location.dimension }}</td>
+                                        <td class="whitespace-nowrap  px-6 py-4">
+                                            <a href="/location/{{ location.id }}"
+                                               class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                                See More
+                                            </a></td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-1 pb-5 ">
+                <a href="/locations/{{ page.prev }}"
+                   class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+                    </svg>
+                </a>
+                {% set current = page.next-1 %}
                 {% for i in 1..page.pages %}
-                    <li>
-                        <a
-                                class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                                href="/locations/{{ i }}"
-                        >{{ i }}</a
-                        >
-                    </li>
+                    <a href="/locations/{{ i }}"
+                       class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white">
+                        {{ i }}
+                    </a>
                 {% endfor %}
-                <a
-                        class="border border-gray-300 relative block rounded bg-white px-3 py-1.5 text-sm text-neutral-600 transition-all duration-100 hover:bg-neutral-100"
-                        href="/locations/{{ page.next }}"
-                >>></a>
-            </ul>
+                <a href="/locations/{{ page.next }}"
+                   class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </a>
+            </div>
         </div>
-    </div>
     {% endif %}
 {% endblock %}

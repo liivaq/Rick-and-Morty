@@ -8,6 +8,7 @@ use App\Models\Page;
 use GuzzleHttp\Client;
 use App\Models\Character;
 use GuzzleHttp\Exception\GuzzleException;
+use stdClass;
 
 class ApiClient
 {
@@ -20,21 +21,21 @@ class ApiClient
         ]);
     }
 
-    public function getCharacters(int $page, string $search): array
+    public function getCharacters(int $page, string $name): array
     {
         try {
-            if(!Cache::has('characters_'.$search.'_'.$page)){
+            if(!Cache::has('characters_'.$name.'_'.$page)){
                 $response = $this->client->get('character/', [
                     'query' => [
-                        'name' => $search,
+                        'name' => $name,
                         'page' => $page,
                     ]
                 ]);
 
                 $responseJson = $response->getBody()->getContents();
-                Cache::save('characters_'.$search.'_'.$page, $responseJson);
+                Cache::save('characters_'.$name.'_'.$page, $responseJson);
             }else{
-                $responseJson = Cache::get('characters_'.$search.'_'.$page);
+                $responseJson = Cache::get('characters_'.$name.'_'.$page);
             }
 
             $characters = json_decode($responseJson);
@@ -43,7 +44,7 @@ class ApiClient
                 $characterCollection[] = $this->createCharacter($character);
             }
             $pageInfo = new Page($characters->info);
-            return ['characters' => $characterCollection, 'page' => $pageInfo, 'name' => $search];
+            return ['characters' => $characterCollection, 'page' => $pageInfo, 'name' => $name];
         } catch (GuzzleException $exception) {
             return [];
         }
@@ -188,7 +189,7 @@ class ApiClient
         }
     }
 
-    private function createCharacter(\stdClass $character): Character
+    private function createCharacter(stdClass $character): Character
     {
         $episodeIds = [];
         foreach ($character->episode as $episode) {
@@ -208,7 +209,7 @@ class ApiClient
         );
     }
 
-    private function createEpisode(\stdClass $episode): Episode
+    private function createEpisode(stdClass $episode): Episode
     {
         $characterIds = [];
         foreach ($episode->characters as $character) {
@@ -223,7 +224,7 @@ class ApiClient
         );
     }
 
-    private function createLocation(\stdClass $episode): Location
+    private function createLocation(stdClass $episode): Location
     {
         $characterIds = [];
         if (empty($episode->residents)) {
