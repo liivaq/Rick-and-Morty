@@ -65,7 +65,11 @@
                 </a>
                 {% for i in 1..page.pages %}
                     <a href="/locations/{{ i }}"
-                       class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white">
+                            {% if i == currentPage %}
+                        class="px-4 py-2 text-white bg-black rounded-md"
+                    {% else %}
+                        class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
+                            {% endif %}>
                         {{ i }}
                     </a>
                 {% endfor %}

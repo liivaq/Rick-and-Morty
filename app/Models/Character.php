@@ -7,11 +7,11 @@ class Character
     private string $name;
     private string $status;
     private string $species;
-    private \stdClass $origin;
-    private \stdClass $location;
+    private ?Location $origin;
+    private ?Location $location;
     private string $image;
     private string $url;
-    private array $episodes;
+    private array $episodeIds;
     private Episode $firstEpisode;
 
     public function __construct(
@@ -19,8 +19,8 @@ class Character
         string    $name,
         string    $status,
         string    $species,
-        \stdClass $origin,
-        \stdClass $location,
+        ?Location $origin,
+        ?Location $location,
         string    $image,
         string    $url,
         array     $episodes,
@@ -35,7 +35,7 @@ class Character
         $this->location = $location;
         $this->image = $image;
         $this->url = $url;
-        $this->episodes = $episodes;
+        $this->episodeIds = $episodes;
         $this->firstEpisode = $firstEpisode;
     }
 
@@ -59,12 +59,12 @@ class Character
         return $this->species;
     }
 
-    public function getOrigin(): \stdClass
+    public function getOrigin(): ?Location
     {
         return $this->origin;
     }
 
-    public function getLocation(): \stdClass
+    public function getLocation(): ?Location
     {
         return $this->location;
     }
@@ -79,9 +79,9 @@ class Character
         return $this->url;
     }
 
-    public function getEpisodes(): array
+    public function getEpisodeIds(): array
     {
-        return $this->episodes;
+        return $this->episodeIds;
     }
 
     public function getFirstEpisode(): Episode

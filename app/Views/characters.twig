@@ -16,52 +16,58 @@
             </div>
         </div>
     {% else %}
-        <div class="grid h-screen place-items-center">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full p-6">
+        <div class="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-4 w-full py-6 px-10">
             {% for character in characters %}
-                <a href="/character/{{ character.id }}">
-                    <div class="flex flex-col xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden">
-                        <img
+                <div class="grid grid-cols-3 items-center xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden">
+                    <a href="/character/{{ character.id }}"><img
                                 class="object-cover w-200 h-48"
                                 src="{{ character.image }}"
                                 alt="{{ character.name }}"
                         >
+                    </a>
 
-                        <div class="relative p-4">
-                            <h3 class="text-base md:text-xl font-medium text-gray-800">
-                                {{ character.name }}
-                            </h3>
-
-                            <ul>
-                                {% if character.status == 'Dead' %}
-                                    <h2 class="bg-red-500 text-white font-bold rounded px-4 py-1 w-1/2">
-                                        Dead
-                                    </h2>
-                                {% elseif character.status == 'Alive' %}
-                                    <h2 class="bg-green-500 text-white font-bold rounded px-4 py-1 w-1/2">
-                                        Alive
-                                    </h2>
-                                {% else %}
-                                    <h2 class="bg-gray-500 text-white font-bold rounded px-4 py-1 w-1/2">
-                                        Unknown
-                                    </h2>
-                                {% endif %}
-                                <li><strong>Species:</strong>
-                                    {{ character.species }}
-                                </li>
-                                <li><strong>Last known location:</strong>
-                                    {{ character.location.name }}
-                                </li>
-                                <li><strong>First seen in:</strong>
-                                    {{ character.firstepisode.name }}
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="relative p-4 col-span-2">
+                        <span class="text-base md:text-xl font-medium text-gray-800">
+                            <a href="/character/{{ character.id }}">{{ character.name }}</a>
+                        </span>
+                            {% if character.status == 'Dead' %}
+                                <span class="bg-red-500 text-center text-white text-sm  rounded ml-3  px-2 py-1 w-1/4">
+                                    Dead
+                                </span>
+                            {% elseif character.status == 'Alive' %}
+                                <span class="bg-green-500 text-center text-white text-sm  rounded ml-3 px-2 py-1 w-1/4">
+                                    Alive
+                                </span>
+                            {% else %}
+                                <span class="bg-gray-500 text-center text-white text-sm  rounded ml-3  px-2 py-1 w-1/4">
+                                    Unknown
+                                </span>
+                            {% endif %}
+                        <ul class="w-96 mt-5">
+                            <li
+                                    class="w-full border-b-2 border-neutral-100 border-opacity-100 dark:border-opacity-50">
+                                <strong>Species:</strong>
+                                {{ character.species }}
+                            </li>
+                            <li
+                                    class="py-1 w-full border-b-2 border-neutral-100 border-opacity-100
+                                    dark:border-opacity-50 hover:bg-gray-200 hover:rounded">
+                                <a href="/location/{{ character.location.id }}">
+                                    <strong>Last known location: </strong>{{ character.location.name }}
+                                </a>
+                            </li>
+                            <li
+                                    class="w-full dark:border-opacity-50 hover:bg-gray-200 hover:rounded">
+                                <a href="/episode/{{ character.firstepisode.id }}">
+                                    <strong>First seen in: </strong>{{ character.firstepisode.name }}
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                </a>
+                </div>
             {% endfor %}
         </div>
-        <div class="flex items-center space-x-1 pb-5 ">
+        <div class="flex items-center justify-center space-x-1 pb-5 ">
         <a {% if name is empty %}
             href="/characters/1"
         {% else %}
@@ -75,14 +81,19 @@
 
         {% for i in start..end %}
             <a
-                    {% if name is empty %}
-                        href="/characters/{{ i }}"
-                    {% else %}
-                        href="/characters/{{ i }}/{{ name }}"
-                    {% endif %}
-                    class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white">
-                {{ i }}
+            {% if name is empty %}
+                href="/characters/{{ i }}"
+            {% else %}
+                href="/characters/{{ i }}/{{ name }}"
+            {% endif %}
+            {% if i == currentPage %}
+                class="px-4 py-2 text-white bg-black rounded-md"
+            {% else %}
+                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
+            {% endif %}
+            >{{ i }}
             </a>
+
         {% endfor %}
     {% endif %}
     <a
@@ -95,6 +106,5 @@
         Last Page
     </a>
     <small>Page {{ currentPage }} / {{ page.pages }}</small>
-    </div>
     </div>
 {% endblock %}

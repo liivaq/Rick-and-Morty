@@ -26,7 +26,7 @@ class EpisodeController
         if (!$episode) {
             return new View('notFound', []);
         }
-        $characters = $this->client->getCharactersById($episode->getCharacters());
+        $characters = $this->client->getCharactersById($episode->getCharacterIds());
         return new View('singleEpisode', ['episode' => $episode, 'characters' => $characters]);
     }
 

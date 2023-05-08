@@ -26,7 +26,7 @@ class LocationController
         if (!$location) {
             return new View('notFound', []);
         }
-        $characters = $this->client->getCharactersById($location->getCharacters());
+        $characters = $this->client->getCharactersById($location->getCharacterIds());
         return new View('singleLocation', ['location' => $location, 'characters' => $characters]);
     }
 

@@ -29,7 +29,7 @@ class CharacterController
         if (!$character) {
             return new View('notFound', []);
         }
-        $episodes = $this->client->getEpisodesById($character->getEpisodes());
+        $episodes = $this->client->getEpisodesById($character->getEpisodeIds());
         return new View('singleCharacter', ['character' => $character, 'episodes' => $episodes]);
     }
 }

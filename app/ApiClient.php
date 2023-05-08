@@ -24,7 +24,7 @@ class ApiClient
     public function getCharacters(int $page, string $name): array
     {
         try {
-            if(!Cache::has('characters_'.$name.'_'.$page)){
+            if (!Cache::has('characters_' . $name . '_' . $page)) {
                 $response = $this->client->get('character/', [
                     'query' => [
                         'name' => $name,
@@ -33,9 +33,9 @@ class ApiClient
                 ]);
 
                 $responseJson = $response->getBody()->getContents();
-                Cache::save('characters_'.$name.'_'.$page, $responseJson);
-            }else{
-                $responseJson = Cache::get('characters_'.$name.'_'.$page);
+                Cache::save('characters_' . $name . '_' . $page, $responseJson);
+            } else {
+                $responseJson = Cache::get('characters_' . $name . '_' . $page);
             }
 
             $characters = json_decode($responseJson);
@@ -56,12 +56,12 @@ class ApiClient
     public function getEpisodes(int $page): array
     {
         try {
-            if(!Cache::has('episodes_'.$page)){
+            if (!Cache::has('episodes_' . $page)) {
                 $response = $this->client->get('episode/?page=' . $page);
-                $responseJson = $response->getBody()->getContents() ;
-                Cache::save('episodes_'.$page, $responseJson);
-            }else{
-                $responseJson = Cache::get('episodes_'.$page);
+                $responseJson = $response->getBody()->getContents();
+                Cache::save('episodes_' . $page, $responseJson);
+            } else {
+                $responseJson = Cache::get('episodes_' . $page);
             }
 
             $episodes = json_decode($responseJson);
@@ -70,7 +70,11 @@ class ApiClient
                 $episodeCollection[] = $this->createEpisode($episode);
             }
             $pageInfo = new Page($episodes->info);
-            return ['episodes' => $episodeCollection, 'page' => $pageInfo];
+            return [
+                'episodes' => $episodeCollection,
+                'page' => $pageInfo,
+                'currentPage' => $page
+            ];
         } catch (GuzzleException $exception) {
             return [];
         }
@@ -79,12 +83,12 @@ class ApiClient
     public function getLocations(int $page): array
     {
         try {
-            if(!Cache::has('locations_'.$page)){
+            if (!Cache::has('locations_' . $page)) {
                 $response = $this->client->get('location/?page=' . $page);
-                $responseJson = $response->getBody()->getContents() ;
-                Cache::save('locations_'.$page, $responseJson);
-            }else{
-                $responseJson = Cache::get('locations_'.$page);
+                $responseJson = $response->getBody()->getContents();
+                Cache::save('locations_' . $page, $responseJson);
+            } else {
+                $responseJson = Cache::get('locations_' . $page);
             }
 
             $locations = json_decode($responseJson);
@@ -93,7 +97,11 @@ class ApiClient
                 $locationCollection[] = $this->createLocation($location);
             }
             $pageInfo = new Page($locations->info);
-            return ['locations' => $locationCollection, 'page' => $pageInfo];
+            return [
+                'locations' => $locationCollection,
+                'page' => $pageInfo,
+                'currentPage' => $page
+            ];
         } catch (GuzzleException $exception) {
             return [];
         }
@@ -110,10 +118,10 @@ class ApiClient
                 'character/' . implode(',', $id))->getBody()->getContents());
             $characters = [];
             if (count($id) === 1) {
-                $characters [] = $this->createCharacter($response);
+                $characters [] = $this->getSingleCharacter($response->id);
             } else {
                 foreach ($response as $character) {
-                    $characters[] = $this->createCharacter($character);
+                    $characters[] = $this->getSingleCharacter($character->id);
                 }
             }
             return $characters;
@@ -125,12 +133,12 @@ class ApiClient
     public function getSingleCharacter(int $id): ?Character
     {
         try {
-            if(!Cache::has('character_'.$id)){
+            if (!Cache::has('character_' . $id)) {
                 $response = $this->client->get('character/' . $id);
-                $responseJson = $response->getBody()->getContents() ;
-                Cache::save('character_'.$id, $responseJson);
-            }else{
-                $responseJson = Cache::get('character_'.$id);
+                $responseJson = $response->getBody()->getContents();
+                Cache::save('character_' . $id, $responseJson);
+            } else {
+                $responseJson = Cache::get('character_' . $id);
             }
 
             return $this->createCharacter(json_decode($responseJson));
@@ -147,10 +155,10 @@ class ApiClient
                 'episode/' . implode(',', $id))->getBody()->getContents());
             $episodes = [];
             if (count($id) === 1) {
-                $episodes [] = $this->createEpisode($response);
+                $episodes [] = $this->getSingleEpisode($response->id);
             } else {
                 foreach ($response as $episode) {
-                    $episodes[] = $this->createEpisode($episode);
+                    $episodes[] = $this->getSingleEpisode($episode->id);
                 }
             }
             return $episodes;
@@ -162,12 +170,12 @@ class ApiClient
     public function getSingleEpisode(int $id): ?Episode
     {
         try {
-            if(!Cache::has('episode_'.$id)){
+            if (!Cache::has('episode_' . $id)) {
                 $response = $this->client->get('episode/' . $id);
-                $responseJson = $response->getBody()->getContents() ;
-                Cache::save('episode_'.$id, $responseJson);
-            }else{
-                $responseJson = Cache::get('episode_'.$id);
+                $responseJson = $response->getBody()->getContents();
+                Cache::save('episode_' . $id, $responseJson);
+            } else {
+                $responseJson = Cache::get('episode_' . $id);
             }
 
             return $this->createEpisode(json_decode($responseJson));
@@ -178,13 +186,16 @@ class ApiClient
 
     public function getSingleLocation(int $id): ?Location
     {
+        if(!$id){
+            return null;
+        }
         try {
-            if(!Cache::has('location_'.$id)){
+            if (!Cache::has('location_' . $id)) {
                 $response = $this->client->get('location/' . $id);
-                $responseJson = $response->getBody()->getContents() ;
-                Cache::save('location_'.$id, $responseJson);
-            }else{
-                $responseJson = Cache::get('location_'.$id);
+                $responseJson = $response->getBody()->getContents();
+                Cache::save('location_' . $id, $responseJson);
+            } else {
+                $responseJson = Cache::get('location_' . $id);
             }
             return $this->createLocation(json_decode($responseJson));
         } catch (GuzzleException $exception) {
@@ -203,8 +214,8 @@ class ApiClient
             $character->name,
             $character->status,
             $character->species,
-            $character->origin,
-            $character->location,
+            $this->getSingleLocation((int)basename($character->origin->url)),
+            $this->getSingleLocation((int)basename($character->location->url)),
             $character->image,
             $character->url,
             $episodeIds,
@@ -227,21 +238,21 @@ class ApiClient
         );
     }
 
-    private function createLocation(stdClass $episode): Location
+    private function createLocation(stdClass $location): Location
     {
         $characterIds = [];
-        if (empty($episode->residents)) {
+        if (empty($location->residents)) {
             $characterIds = null;
         } else {
-            foreach ($episode->residents as $character) {
+            foreach ($location->residents as $character) {
                 $characterIds[] = basename($character);
             }
         }
         return new Location(
-            $episode->id,
-            $episode->name,
-            $episode->type,
-            $episode->dimension,
+            $location->id,
+            $location->name,
+            $location->type,
+            $location->dimension,
             $characterIds
         );
     }

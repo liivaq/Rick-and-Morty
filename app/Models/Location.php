@@ -8,7 +8,7 @@ class Location
     private string $name;
     private string $type;
     private string $dimension;
-    private ?array $characters;
+    private ?array $characterIds;
 
     public function __construct(int $id, string $name, string $type, string $dimension, ?array $characters)
     {
@@ -16,7 +16,7 @@ class Location
         $this->name = $name;
         $this->type = $type;
         $this->dimension = $dimension;
-        $this->characters = $characters;
+        $this->characterIds = $characters;
     }
 
     public function getId(): int
@@ -34,9 +34,9 @@ class Location
         return $this->type;
     }
 
-    public function getCharacters(): ?array
+    public function getCharacterIds(): ?array
     {
-        return $this->characters;
+        return $this->characterIds;
     }
 
     public function getDimension(): string
