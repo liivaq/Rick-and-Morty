@@ -2,88 +2,31 @@
 
 {% block content %}
     {% if episodes is empty %}
-        <div class="bg-indigo-900 relative overflow-hidden h-screen">
-            <img src="https://i.pinimg.com/originals/e2/fb/0b/e2fb0b2ac9b7e82275eacc8c2ee9c846.jpg"
-                 class="absolute h-full w-full object-cover" alt="rick-and-morty background image"/>
-            <div class="inset-0 bg-black opacity-25 absolute">
-            </div>
-            <div class="container mx-auto px-6 md:px-12 relative z-10 flex items-center py-32 xl:py-40">
-                <div class="w-full font-mono flex flex-col items-center relative z-10">
-                    <h1 class="font-extrabold text-5xl text-center text-white leading-tight mt-4">
-                        Sorry, no episodes found!
-                    </h1>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="grid h-screen place-items-center mt-5">
-            <h2 class="text-4xl font-extrabold dark:text-white">List of Rick and Morty episodes</h2>
-            <div class="flex flex-col content-center">
-                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div class="inline-flex py-2 sm:px-6 lg:px-8">
-                        <div class="overflow-hidden">
-                            <table class="min-w-full text-center text-sm font-light ">
-                                <thead
-                                        class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
-                                <tr>
-                                    <th scope="col" class=" px-6 py-4">#</th>
-                                    <th scope="col" class=" px-6 py-4">Name</th>
-                                    <th scope="col" class=" px-6 py-4">Air date</th>
-                                    <th scope="col" class=" px-6 py-4">Season</th>
-                                    <th scope="col" class=" px-6 py-4">Episode</th>
-                                    <th scope="col" class=" px-6 py-4"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for episode in episodes %}
-                                    <tr class="border-b dark:border-neutral-500">
-                                        <td class="whitespace-nowrap  px-6 py-4 font-medium">{{ episode.id }}</td>
-                                        <td class="whitespace-nowrap  px-6 py-4">{{ episode.name }}</td>
-                                        <td class="whitespace-nowrap  px-6 py-4">{{ episode.airdate }}</td>
-                                        <td class="whitespace-nowrap  px-6 py-4">{{ episode.episode[2:1] }}</td>
-                                        <td class="whitespace-nowrap  px-6 py-4">{{ episode.episode[4:] }}</td>
-                                        <td class="whitespace-nowrap  px-6 py-4">
-                                            <a href="/episode/{{ episode.id }}"
-                                               class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                                See More
-                                            </a></td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center space-x-1 pb-5 ">
-                <a href="/episodes/{{ page.prev }}"
-                   class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
-                    </svg>
-                </a>
-                {% for i in 1..page.pages %}
-                    <a href="/episodes/{{ i }}"
-                            {% if i == currentPage %}
-                        class="px-4 py-2 text-white bg-black rounded-md"
-                    {% else %}
-                        class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
-                            {% endif %}>
-                        {{ i }}
-                    </a>
-                {% endfor %}
-                <a href="/episodes/{{ page.next }}"
-                   class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
     {% endif %}
+
+    <div class=" grid grid-cols-1 gap-4 items-center w-full py-6 px-10">
+        {% for i in 1..5 %}
+            <div class="flex justify-evenly grid grid-cols-4  items-center xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg p-5">
+                <h1 class="col-span-2 font-semibold text-xl tracking-tight pb-5">Season {{ i }}</h1>
+                <h1 class="font-semibold text-l tracking-tight ">Air-date</h1>
+                <h1 class="font-semibold text-l tracking-tight">Characters in episode</h1>
+                {% for episode in episodes %}
+                    {% if episode.season == i %}
+                        <div class="grid col-span-2 hover:bg-gray-200 hover:rounded">
+                            <a href="/episode/{{ episode.id }}" class="">
+                                <span class="px-5">{{ episode.episode }}.</span>
+                                {{ episode.name }}
+                            </a>
+                        </div>
+                        <div>
+                            {{ episode.airdate }}
+                        </div>
+                        <div class="pl-10">
+                            {{ episode.characterIds|length }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

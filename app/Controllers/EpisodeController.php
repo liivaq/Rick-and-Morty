@@ -14,19 +14,28 @@ class EpisodeController
         $this->client = new ApiClient();
     }
 
+    public function allEpisodes(): View
+    {
+        $episodeCount = $this->client->getEpisodeCount();
+        $response = $this->client->getMultipleEpisodesById(range(1,$episodeCount));
+        return new View('episodes', ['episodes' => $response]);
+    }
+
     public function episodes(array $vars): View
     {
-        $response = $this->client->getEpisodes((int)$vars['page'] ?? 1);
+        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
+        $response = $this->client->getEpisodes($page);
         return new View('episodes', $response);
     }
 
     public function singleEpisode(array $vars): View
     {
-        $episode = $this->client->getSingleEpisode((int)$vars['page'] ?? 1);
+        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
+        $episode = $this->client->getSingleEpisode($page);
         if (!$episode) {
             return new View('notFound', []);
         }
-        $characters = $this->client->getCharactersById($episode->getCharacterIds());
+        $characters = $this->client->getMultipleCharactersById($episode->getCharacterIds());
         return new View('singleEpisode', ['episode' => $episode, 'characters' => $characters]);
     }
 

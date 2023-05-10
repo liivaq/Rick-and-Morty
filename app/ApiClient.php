@@ -44,10 +44,13 @@ class ApiClient
                 $characterCollection[] = $this->createCharacter($character);
             }
             $pageInfo = new Page($characters->info);
-            return ['characters' => $characterCollection,
-                'currentPage' => $page,
-                'page' => $pageInfo,
-                'name' => $name];
+            return
+                [
+                    'characters' => $characterCollection,
+                    'currentPage' => $page,
+                    'page' => $pageInfo,
+                    'name' => $name
+                ];
         } catch (GuzzleException $exception) {
             return [];
         }
@@ -107,7 +110,7 @@ class ApiClient
         }
     }
 
-    public function getCharactersById(?array $id): array
+    public function getMultipleCharactersById(?array $id): array
     {
         if (!$id) {
             return [];
@@ -148,17 +151,18 @@ class ApiClient
         }
     }
 
-    public function getEpisodesById(array $id): array
+    public function getMultipleEpisodesById(array $ids): array
     {
         try {
-            $response = json_decode($this->client->get(
-                'episode/' . implode(',', $id))->getBody()->getContents());
             $episodes = [];
-            if (count($id) === 1) {
-                $episodes [] = $this->getSingleEpisode($response->id);
+            $response = json_decode($this->client->get(
+                'episode/' . implode(',', $ids))->getBody()->getContents());
+
+            if (count($ids) === 1) {
+                $episodes [] = $this->createEpisode($response);
             } else {
-                foreach ($response as $episode) {
-                    $episodes[] = $this->getSingleEpisode($episode->id);
+                foreach ($response as $ep) {
+                    $episodes[] = $this->createEpisode($ep);
                 }
             }
             return $episodes;
@@ -186,7 +190,7 @@ class ApiClient
 
     public function getSingleLocation(int $id): ?Location
     {
-        if(!$id){
+        if (!$id) {
             return null;
         }
         try {
@@ -200,6 +204,16 @@ class ApiClient
             return $this->createLocation(json_decode($responseJson));
         } catch (GuzzleException $exception) {
             return null;
+        }
+    }
+
+    public function getEpisodeCount(): int
+    {
+        try {
+            $response = json_decode($this->client->get('episode/')->getBody()->getContents());
+            return $response->info->count;
+        } catch (GuzzleException $exception) {
+            return 0;
         }
     }
 
@@ -233,7 +247,8 @@ class ApiClient
             $episode->id,
             $episode->name,
             $episode->air_date,
-            $episode->episode,
+            (int)substr($episode->episode, 2, 2),
+            (int)substr($episode->episode, 4, 5),
             $characterIds
         );
     }

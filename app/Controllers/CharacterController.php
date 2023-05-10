@@ -16,20 +16,21 @@ class CharacterController
 
     public function characters(array $vars): View
     {
-        $page = $vars['page'] ?? 1;
+        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
         $name = $vars['name'] ?? $_GET['name'] ?? '';
-        $response = $this->client->getCharacters((int)$page, $name);
+        $response = $this->client->getCharacters($page, $name);
         return new View('characters', $response);
     }
 
 
     public function singleCharacter(array $vars): View
     {
-        $character = $this->client->getSingleCharacter((int)$vars['page'] ?? 1);
+        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
+        $character = $this->client->getSingleCharacter($page);
         if (!$character) {
             return new View('notFound', []);
         }
-        $episodes = $this->client->getEpisodesById($character->getEpisodeIds());
+        $episodes = $this->client->getMultipleEpisodesById($character->getEpisodeIds());
         return new View('singleCharacter', ['character' => $character, 'episodes' => $episodes]);
     }
 }

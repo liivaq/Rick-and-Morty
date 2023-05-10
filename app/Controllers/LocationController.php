@@ -16,17 +16,19 @@ class LocationController
 
     public function locations(array $vars): View
     {
-        $response = $this->client->getLocations((int)$vars['page'] ?? 1);
+        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
+        $response = $this->client->getLocations($page);
         return new View('locations', $response);
     }
 
     public function singleLocation(array $vars): View
     {
-        $location = $this->client->getSingleLocation((int)$vars['page'] ?? 1);
+        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
+        $location = $this->client->getSingleLocation($page);
         if (!$location) {
             return new View('notFound', []);
         }
-        $characters = $this->client->getCharactersById($location->getCharacterIds());
+        $characters = $this->client->getMultipleCharactersById($location->getCharacterIds());
         return new View('singleLocation', ['location' => $location, 'characters' => $characters]);
     }
 
