@@ -10,7 +10,8 @@ class Router
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
             $r->addRoute('GET', '/', ['App\Controllers\CharacterController', 'characters']);
-            $r->addRoute('GET', '/characters/{page}[/{name}]', ['App\Controllers\CharacterController', 'characters']);
+            $r->addRoute('GET', '/characters[/{query}]', ['App\Controllers\CharacterController', 'characters']);
+            //$r->addRoute('POST', '/characters[/{name}]', ['App\Controllers\CharacterController', 'characters']);
             $r->addRoute('GET', '/episodes', ['App\Controllers\EpisodeController', 'allEpisodes']);
             $r->addRoute('GET', '/locations[/{page}]', ['App\Controllers\LocationController', 'locations']);
             $r->addRoute('GET', '/character[/{page}]', ['App\Controllers\CharacterController', 'singleCharacter']);
@@ -19,19 +20,16 @@ class Router
         });
 
         $httpMethod = $_SERVER['REQUEST_METHOD'];
-        $uri = $_SERVER['REQUEST_URI'];
-
+        $uri = str_replace('?', '', $_SERVER['REQUEST_URI']);
 
         if (false !== $pos = strpos($uri, '?')) {
             $uri = substr($uri, 0, $pos);
         }
         $uri = rawurldecode($uri);
 
-
         $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
         switch ($routeInfo[0]) {
             case FastRoute\Dispatcher::NOT_FOUND:
-
                 return new View('notFound', []);
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];

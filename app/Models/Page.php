@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Models;
 
@@ -32,9 +32,8 @@ class Page
         if(!$this->next){
             return $this->pages;
         }
-        $query = parse_url($this->next, PHP_URL_QUERY); // Get the query string
-        parse_str($query, $params); // Parse the query string into an array
-
+        $query = parse_url($this->next, PHP_URL_QUERY);
+        parse_str($query, $params);
         return (int )$params['page'];
 
     }

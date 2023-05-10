@@ -16,9 +16,14 @@ class CharacterController
 
     public function characters(array $vars): View
     {
-        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
-        $name = $vars['name'] ?? $_GET['name'] ?? '';
-        $response = $this->client->getCharacters($page, $name);
+        parse_str(implode('',$vars), $query);
+
+        $page = $_GET['page'] ?? (int)$query['page'] ?? 1;
+        $name = $_GET['name'] ?? $query['name'] ?? '';
+        $status = $_GET['status'] ?? $query['status'] ?? '';
+        $gender = $_GET['gender'] ?? $query['gender'] ?? '';
+
+        $response = $this->client->getCharacters($page, $name, $status, $gender);
         return new View('characters', $response);
     }
 

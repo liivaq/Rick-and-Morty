@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controllers;
 
@@ -21,13 +21,6 @@ class EpisodeController
         return new View('episodes', ['episodes' => $response]);
     }
 
-    public function episodes(array $vars): View
-    {
-        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
-        $response = $this->client->getEpisodes($page);
-        return new View('episodes', $response);
-    }
-
     public function singleEpisode(array $vars): View
     {
         $page = isset($vars['page']) ? (int)$vars['page'] : 1;
@@ -38,6 +31,5 @@ class EpisodeController
         $characters = $this->client->getMultipleCharactersById($episode->getCharacterIds());
         return new View('singleEpisode', ['episode' => $episode, 'characters' => $characters]);
     }
-
 
 }

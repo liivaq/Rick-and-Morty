@@ -10,7 +10,12 @@ class Location
     private string $dimension;
     private ?array $characterIds;
 
-    public function __construct(int $id, string $name, string $type, string $dimension, ?array $characters)
+    public function __construct(
+        int $id,
+        string $name,
+        string $type,
+        string $dimension,
+        ?array $characters)
     {
         $this->id = $id;
         $this->name = $name;

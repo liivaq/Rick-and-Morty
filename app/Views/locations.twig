@@ -1,13 +1,28 @@
 {% extends "layout.twig" %}
 
 {% block content %}
+    {% if locations is empty %}
+    <div class="bg-indigo-900 relative overflow-hidden h-screen">
+        <img src="https://i.pinimg.com/originals/e2/fb/0b/e2fb0b2ac9b7e82275eacc8c2ee9c846.jpg"
+             class="absolute h-full w-full object-cover" alt="rick-and-morty background image"/>
+        <div class="inset-0 bg-black opacity-25 absolute">
+        </div>
+        <div class="container mx-auto px-6 md:px-12 relative z-10 flex items-center py-32 xl:py-40">
+            <div class="w-full font-mono flex flex-col items-center relative z-10">
+                <h1 class="font-extrabold text-5xl text-center text-white leading-tight mt-4">
+                    Sorry, no locations found!
+                </h1>
+            </div>
+        </div>
+    </div>
+    {% else %}
     <div class="grid grid-cols-1 gap-4 items-center w-full py-6 px-20">
         <div class="flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                     <div class="overflow-hidden">
-                        <table class="min-w-full text-center text-sm font-light">
-                            <thead class="border-b font-medium dark:border-neutral-500">
+                        <table class="min-w-full text-center font-light">
+                            <thead class="border-b dark:border-neutral-500">
                             <tr>
                                 <th scope="col" class="px-6 py-4">#</th>
                                 <th scope="col" class="px-6 py-4">Name</th>
@@ -67,4 +82,5 @@
             </svg>
         </a>
     </div>
+    {% endif %}
 {% endblock %}

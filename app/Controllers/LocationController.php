@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controllers;
 
@@ -31,5 +31,4 @@ class LocationController
         $characters = $this->client->getMultipleCharactersById($location->getCharacterIds());
         return new View('singleLocation', ['location' => $location, 'characters' => $characters]);
     }
-
 }

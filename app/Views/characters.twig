@@ -16,6 +16,7 @@
             </div>
         </div>
     {% else %}
+        <h1 class="text-base font-medium text-gray-800 ml-10 pt-5">Total characters: {{ page.count }}</h1>
         <div class="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-4 w-full py-6 px-10">
             {% for character in characters %}
                 <div class="grid grid-cols-3 items-center xl:flex-row shadow hover:shadow-md w-full bg-white rounded-lg overflow-hidden">
@@ -30,19 +31,19 @@
                         <span class="text-base md:text-xl font-medium text-gray-800">
                             <a href="/character/{{ character.id }}">{{ character.name }}</a>
                         </span>
-                            {% if character.status == 'Dead' %}
-                                <span class="bg-red-500 text-center text-white text-sm  rounded ml-3  px-2 py-1 w-1/4">
+                        {% if character.status == 'Dead' %}
+                            <span class="bg-red-500 text-center text-white text-sm  rounded ml-3  px-2 py-1 w-1/4">
                                     Dead
                                 </span>
-                            {% elseif character.status == 'Alive' %}
-                                <span class="bg-green-500 text-center text-white text-sm  rounded ml-3 px-2 py-1 w-1/4">
+                        {% elseif character.status == 'Alive' %}
+                            <span class="bg-green-500 text-center text-white text-sm  rounded ml-3 px-2 py-1 w-1/4">
                                     Alive
                                 </span>
-                            {% else %}
-                                <span class="bg-gray-500 text-center text-white text-sm  rounded ml-3  px-2 py-1 w-1/4">
+                        {% else %}
+                            <span class="bg-gray-500 text-center text-white text-sm  rounded ml-3  px-2 py-1 w-1/4">
                                     Unknown
                                 </span>
-                            {% endif %}
+                        {% endif %}
                         <ul class="w-96 mt-5">
                             <li
                                     class="w-full border-b-2 border-neutral-100 border-opacity-100 dark:border-opacity-50">
@@ -67,44 +68,35 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="flex items-center justify-center space-x-1 pb-5 ">
-        <a {% if name is empty %}
-            href="/characters/1"
-        {% else %}
-            href="/characters/1/{{ name }}"
-        {% endif %}
-                class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
-            First Page
-        </a>
-        {% set start = max(1, currentPage-5) %}
-        {% set end = min(page.pages, currentPage+5) %}
-
-        {% for i in start..end %}
-            <a
-            {% if name is empty %}
-                href="/characters/{{ i }}"
-            {% else %}
-                href="/characters/{{ i }}/{{ name }}"
-            {% endif %}
-            {% if i == currentPage %}
-                class="px-4 py-2 text-white bg-black rounded-md"
-            {% else %}
-                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
-            {% endif %}
-            >{{ i }}
+        {% if page.pages > 1 %}
+            <div class="flex items-center justify-center space-x-1 pb-5 ">
+            <a href="/characters/page=1"
+               class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                First Page
             </a>
+            {% set start = max(1, currentPage-5) %}
+            {% set end = min(page.pages, currentPage+5) %}
 
-        {% endfor %}
+            {% for i in start..end %}
+                <a
+                        href="/characters/page={{ i }}&name={{ name }}&status={{ status }}&gender={{ gender }}"
+
+                        {% if i == currentPage %}
+                            class="px-4 py-2 text-white bg-black rounded-md"
+                        {% else %}
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
+                        {% endif %}
+                >{{ i }}
+                </a>
+
+            {% endfor %}
+        {% endif %}
+        <a
+                href="/characters/page={{ page.pages }}"
+
+                class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+            Last Page ({{ page.pages }})
+        </a>
+        </div>
     {% endif %}
-    <a
-            {% if name is empty %}
-                href="/characters/{{ page.pages }}"
-            {% else %}
-                href="/characters/{{ page.pages }}/{{ name }}"
-            {% endif %}
-            class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
-        Last Page
-    </a>
-    <small>Page {{ currentPage }} / {{ page.pages }}</small>
-    </div>
 {% endblock %}
