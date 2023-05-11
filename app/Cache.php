@@ -21,17 +21,6 @@ class Cache
         return $content->content;
     }
 
-    public static function forget(): void
-    {
-        //unlink('../cache/' . $key);
-        $files = glob('../cache/*'); // get all file names
-        foreach($files as $file){ // iterate files
-            if(is_file($file)) {
-                unlink($file); // delete file
-            }
-        }
-    }
-
     public static function has(string $key): bool
     {
         if (!file_exists('../cache/' . $key)) {

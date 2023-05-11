@@ -10,7 +10,7 @@
         <title>Rick and Morty</title>
     {% endblock %}
 </head>
-<body class="bg-gray-100">
+<body class="flex flex-col h-screen bg-gray-100">
 <header>
     <nav
             class="flex items-center justify-between flex-wrap bg-black py-4 lg:px-12 shadow border-solid border-t-2 border-gray-700">
@@ -76,9 +76,13 @@
             </form>
         </div>
     </nav>
-
 </header>
 
-<div id="content">{% block content %}{% endblock %}</div>
+<div id="content" class="flex-grow">{% block content %}{% endblock %}</div>
+<footer class="">
+    <div class="bg-black p-4 text-center text-white dark:text-neutral-200">
+        @ {{ "now"|date("Y") }}
+    </div>
+</footer>
 </body>
 </html>

@@ -18,7 +18,7 @@ class CharacterController
     {
         parse_str(implode('',$vars), $query);
 
-        $page = $_GET['page'] ?? (int)$query['page'] ?? 1;
+        $page = $_GET['page'] ?? isset($query['page']) ? (int)$query['page'] : 1;
         $name = $_GET['name'] ?? $query['name'] ?? '';
         $status = $_GET['status'] ?? $query['status'] ?? '';
         $gender = $_GET['gender'] ?? $query['gender'] ?? '';

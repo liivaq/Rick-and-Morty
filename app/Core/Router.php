@@ -11,7 +11,6 @@ class Router
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
             $r->addRoute('GET', '/', ['App\Controllers\CharacterController', 'characters']);
             $r->addRoute('GET', '/characters[/{query}]', ['App\Controllers\CharacterController', 'characters']);
-            //$r->addRoute('POST', '/characters[/{name}]', ['App\Controllers\CharacterController', 'characters']);
             $r->addRoute('GET', '/episodes', ['App\Controllers\EpisodeController', 'allEpisodes']);
             $r->addRoute('GET', '/locations[/{page}]', ['App\Controllers\LocationController', 'locations']);
             $r->addRoute('GET', '/character[/{page}]', ['App\Controllers\CharacterController', 'singleCharacter']);

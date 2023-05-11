@@ -59,27 +59,27 @@
 
             </div>
             <!-- Right Side -->
-            <div class="w-full md:w-9/12 mx-2 h-64">
+            <div class="w-full md:w-9/12 mx-2">
                 <!-- Profile tab -->
                 <!-- About Section -->
 
                 <div class="bg-white p-3 shadow-sm rounded-sm">
                     <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
-                        <span class="tracking-wide">Episodes starring {{ character.name }}</span>
+                        <span class="tracking-wide">Episodes starring {{ character.name }} ({{ episodes|length }})</span>
                     </div>
                     <div class="text-gray-700">
                         <div class="grid md:grid-cols-1 pt-3">
                             <table class="table-auto ">
                                 <thead>
                                 <tr class="border-b border-black">
-                                    <th class="table-cell text-left pl-5">Episode Name</th>
-                                    <th class="table-cell text-left">Season</th>
-                                    <th class="table-cell text-left">Air date</th>
+                                    <th class="table-cell text-center">Episode Name</th>
+                                    <th class="table-cell text-center">Season</th>
+                                    <th class="table-cell text-center">Air date</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for episode in episodes %}
-                                <tr class="border-b border-gray-300">
+                                <tr class="border-b border-gray-300 text-center">
                                     <td class="pl-5">{{ episode.name }}</td>
                                     <td>{{ episode.season }}</td>
                                     <td>{{ episode.airdate }}</td>
