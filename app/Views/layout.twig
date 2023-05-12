@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="text-gray-600">
-            <form method="GET" action="/characters/">
+            <form method="GET" action="/search">
                 <label for="search "></label>
                 <input
                         class="border-2 border-gray-300 bg-white h-10 pl-2 pr-8 rounded-lg text-sm focus:outline-none"
@@ -79,10 +79,5 @@
 </header>
 
 <div id="content" class="flex-grow">{% block content %}{% endblock %}</div>
-<footer class="">
-    <div class="bg-black p-4 text-center text-white dark:text-neutral-200">
-        @ {{ "now"|date("Y") }}
-    </div>
-</footer>
 </body>
 </html>

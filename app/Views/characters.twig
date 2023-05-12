@@ -76,9 +76,21 @@
                 {% set start = max(1, currentPage-5) %}
                 {% set end = min(page.pages, currentPage+5) %}
 
+
                 {% for i in start..end %}
+                    {% if name is defined or  status is defined or  gender is defined %}
+                        <a href="/search?page={{ i }}&name={{ name }}&status={{ status }}&gender={{ gender }}"
+                                {% if i == currentPage %}
+                            class="px-4 py-2 text-white bg-black rounded-md"
+                        {% else %}
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
+                                {% endif %}>
+                            {{ i }}
+
+                        </a>
+                    {% else %}
                     <a
-                            href="/characters/page={{ i }}&name={{ name }}&status={{ status }}&gender={{ gender }}"
+                            href="/characters/{{ i }}"
 
                             {% if i == currentPage %}
                                 class="px-4 py-2 text-white bg-black rounded-md"
@@ -87,7 +99,7 @@
                             {% endif %}
                     >{{ i }}
                     </a>
-
+                    {% endif %}
                 {% endfor %}
 
                 <a

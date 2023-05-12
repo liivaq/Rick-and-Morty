@@ -17,7 +17,7 @@ class LocationController
     public function locations(array $vars): View
     {
         $page = isset($vars['page']) ? (int)$vars['page'] : 1;
-        $response = $this->client->getLocations($page);
+        $response = $this->client->getLocationPage($page);
         return new View('locations', $response);
     }
 

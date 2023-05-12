@@ -16,14 +16,8 @@ class CharacterController
 
     public function characters(array $vars): View
     {
-        parse_str(implode('',$vars), $query);
-
-        $page = $_GET['page'] ?? isset($query['page']) ? (int)$query['page'] : 1;
-        $name = $_GET['name'] ?? $query['name'] ?? '';
-        $status = $_GET['status'] ?? $query['status'] ?? '';
-        $gender = $_GET['gender'] ?? $query['gender'] ?? '';
-
-        $response = $this->client->getCharacters($page, $name, $status, $gender);
+        $page =  isset($vars['page']) ? (int) $vars['page'] : 1;
+        $response = $this->client->getCharacterPage($page);
         return new View('characters', $response);
     }
 
@@ -37,5 +31,16 @@ class CharacterController
         }
         $episodes = $this->client->getMultipleEpisodesById($character->getEpisodeIds());
         return new View('singleCharacter', ['character' => $character, 'episodes' => $episodes]);
+    }
+
+    public function search(): View
+    {
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $name = $_GET['name'] ?? '';
+        $status =  $_GET['status'] ?? '';
+        $gender =  $_GET['gender'] ?? '';
+
+        $characters = $this->client->searchCharacters($page, $name, $status, $gender);
+        return new View('characters', $characters);
     }
 }

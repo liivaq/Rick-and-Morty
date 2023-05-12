@@ -8,18 +8,37 @@ class Router
 {
     public static function route()
     {
-        $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-            $r->addRoute('GET', '/', ['App\Controllers\CharacterController', 'characters']);
-            $r->addRoute('GET', '/characters[/{query}]', ['App\Controllers\CharacterController', 'characters']);
-            $r->addRoute('GET', '/episodes', ['App\Controllers\EpisodeController', 'allEpisodes']);
-            $r->addRoute('GET', '/locations[/{page}]', ['App\Controllers\LocationController', 'locations']);
-            $r->addRoute('GET', '/character[/{page}]', ['App\Controllers\CharacterController', 'singleCharacter']);
-            $r->addRoute('GET', '/episode[/{page}]', ['App\Controllers\EpisodeController', 'singleEpisode']);
-            $r->addRoute('GET', '/location[/{page}]', ['App\Controllers\LocationController', 'singleLocation']);
+        $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) {
+            $router->addRoute(
+                'GET', '/', ['App\Controllers\CharacterController', 'characters']
+            );
+            $router->addRoute(
+                'GET', '/search', ['App\Controllers\CharacterController', 'search']
+            );
+
+            $router->addRoute(
+                'GET', '/characters[/{page}]', ['App\Controllers\CharacterController', 'characters']
+            );
+
+            $router->addRoute(
+                'GET', '/episodes', ['App\Controllers\EpisodeController', 'allEpisodes']
+            );
+            $router->addRoute(
+                'GET', '/locations[/{page}]', ['App\Controllers\LocationController', 'locations']
+            );
+            $router->addRoute(
+                'GET', '/character[/{page}]', ['App\Controllers\CharacterController', 'singleCharacter']
+            );
+            $router->addRoute(
+                'GET', '/episode[/{page}]', ['App\Controllers\EpisodeController', 'singleEpisode']
+            );
+            $router->addRoute(
+                'GET', '/location[/{page}]', ['App\Controllers\LocationController', 'singleLocation']
+            );
         });
 
         $httpMethod = $_SERVER['REQUEST_METHOD'];
-        $uri = str_replace('?', '', $_SERVER['REQUEST_URI']);
+        $uri = $_SERVER['REQUEST_URI'];
 
         if (false !== $pos = strpos($uri, '?')) {
             $uri = substr($uri, 0, $pos);

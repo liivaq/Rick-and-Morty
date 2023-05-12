@@ -21,15 +21,44 @@ class ApiClient
         ]);
     }
 
-    public function getCharacters(
-        int $page,
-        string $name,
-        string $status,
-        string $gender
-    ): array
+    public function getCharacterPage(int $page): array
     {
         try {
-            $cacheKey = 'characters_' . $name . '_' . $page . '_'. $gender . '_'. $status;
+            $cacheKey = 'characters_' . $page;
+            if (!Cache::has($cacheKey)) {
+                $response = $this->client->get('character/', [
+                    'query' => [
+                        'page' => $page,
+                    ]
+                ]);
+
+                $responseContents = $response->getBody()->getContents();
+                Cache::save($cacheKey, $responseContents);
+            } else {
+                $responseContents = Cache::get($cacheKey);
+            }
+
+            $characters = json_decode($responseContents);
+            $characterCollection = [];
+            foreach ($characters->results as $character) {
+                $characterCollection[] = $this->createCharacter($character);
+            }
+            $pageInfo = new Page($characters->info);
+            return
+                [
+                    'characters' => $characterCollection,
+                    'currentPage' => $page,
+                    'page' => $pageInfo,
+                ];
+        } catch (GuzzleException $exception) {
+            return [];
+        }
+    }
+
+    public function searchCharacters(int $page, string $name, string $status, string $gender): array
+    {
+        try {
+            $cacheKey = 'characters_' . $page . '_' . $name . '_' . $status . '_' . $gender;
             if (!Cache::has($cacheKey)) {
                 $response = $this->client->get('character/', [
                     'query' => [
@@ -58,14 +87,15 @@ class ApiClient
                     'currentPage' => $page,
                     'page' => $pageInfo,
                     'name' => $name,
-                    'status' => $status,
-                    'gender' => $gender
+                    'gender' => $gender,
+                    'status' => $status
                 ];
         } catch (GuzzleException $exception) {
             return [];
         }
     }
-    public function getLocations(int $page): array
+
+    public function getLocationPage(int $page): array
     {
         try {
             $cacheKey = 'locations_' . $page;
@@ -120,10 +150,10 @@ class ApiClient
     {
         try {
             $cacheKey = 'character_' . $id;
-            if (!Cache::has( $cacheKey)) {
+            if (!Cache::has($cacheKey)) {
                 $response = $this->client->get('character/' . $id);
                 $responseContents = $response->getBody()->getContents();
-                Cache::save( $cacheKey, $responseContents);
+                Cache::save($cacheKey, $responseContents);
             } else {
                 $responseContents = Cache::get($cacheKey);
             }
@@ -145,8 +175,8 @@ class ApiClient
             if (count($ids) === 1) {
                 $episodes [] = $this->createEpisode($response);
             } else {
-                foreach ($response as $ep) {
-                    $episodes[] = $this->createEpisode($ep);
+                foreach ($response as $episode) {
+                    $episodes[] = $this->createEpisode($episode);
                 }
             }
             return $episodes;
