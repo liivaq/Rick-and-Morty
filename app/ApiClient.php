@@ -197,7 +197,9 @@ class ApiClient
                 }
             }
 
+
             if (!$toFetch) {
+                usort($episodes, fn($a, $b) => $a->getId() > $b->getId());
                 return $episodes;
             }
 
@@ -215,6 +217,7 @@ class ApiClient
         } catch (GuzzleException $exception) {
             return [];
         }
+        usort($episodes, fn($a, $b) => $a->getId() > $b->getId());
         return $episodes;
     }
 
