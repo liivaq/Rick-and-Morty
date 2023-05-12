@@ -69,10 +69,17 @@
         </div>
         {% if page.pages > 1 %}
             <div class="flex items-center justify-center space-x-1 pb-5 ">
-                <a href="/characters/page=1"
-                   class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
-                    First Page
-                </a>
+                {% if name is defined or  status is defined or  gender is defined %}
+                    <a href="/search?page=1&name={{ name }}&status={{ status }}&gender={{ gender }}"
+                       class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                        First Page
+                    </a>
+                {% else %}
+                    <a href="/characters/1"
+                       class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                        First Page
+                    </a>
+                {% endif %}
                 {% set start = max(1, currentPage-5) %}
                 {% set end = min(page.pages, currentPage+5) %}
 
@@ -86,28 +93,31 @@
                             class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
                                 {% endif %}>
                             {{ i }}
-
                         </a>
                     {% else %}
-                    <a
-                            href="/characters/{{ i }}"
-
-                            {% if i == currentPage %}
-                                class="px-4 py-2 text-white bg-black rounded-md"
-                            {% else %}
-                                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
-                            {% endif %}
-                    >{{ i }}
-                    </a>
+                        <a
+                                href="/characters/{{ i }}"
+                                {% if i == currentPage %}
+                                    class="px-4 py-2 text-white bg-black rounded-md"
+                                {% else %}
+                                    class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-black hover:text-white"
+                                {% endif %}
+                        >{{ i }}
+                        </a>
                     {% endif %}
                 {% endfor %}
 
-                <a
-                        href="/characters/page={{ page.pages }}"
-
-                        class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
-                    Last Page ({{ page.pages }})
-                </a>
+                {% if name is defined or  status is defined or  gender is defined %}
+                    <a href="/search?page={{ page.pages }}&name={{ name }}&status={{ status }}&gender={{ gender }}"
+                       class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                        Last Page
+                    </a>
+                {% else %}
+                    <a href="/characters/{{ page.pages }}"
+                       class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md hover:bg-black hover:text-white">
+                        Last Page
+                    </a>
+                {% endif %}
             </div>
         {% endif %}
     {% endif %}

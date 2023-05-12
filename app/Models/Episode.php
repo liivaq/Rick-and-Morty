@@ -12,12 +12,12 @@ class Episode
     private array $characterIds;
 
     public function __construct(
-        int $id,
+        int    $id,
         string $name,
         string $airDate,
-        int $season,
-        int $episode,
-        array $characters)
+        int    $season,
+        int    $episode,
+        array  $characters)
     {
         $this->id = $id;
         $this->name = $name;

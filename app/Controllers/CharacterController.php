@@ -16,7 +16,7 @@ class CharacterController
 
     public function characters(array $vars): View
     {
-        $page =  isset($vars['page']) ? (int) $vars['page'] : 1;
+        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
         $response = $this->client->getCharacterPage($page);
         return new View('characters', $response);
     }
@@ -35,10 +35,10 @@ class CharacterController
 
     public function search(): View
     {
-        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-        $name = $_GET['name'] ?? '';
-        $status =  $_GET['status'] ?? '';
-        $gender =  $_GET['gender'] ?? '';
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $name = trim($_GET['name']) ?? '';
+        $status = $_GET['status'] ?? '';
+        $gender = $_GET['gender'] ?? '';
 
         $characters = $this->client->searchCharacters($page, $name, $status, $gender);
         return new View('characters', $characters);

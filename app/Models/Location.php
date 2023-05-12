@@ -11,7 +11,7 @@ class Location
     private ?array $characterIds;
 
     public function __construct(
-        int $id,
+        int    $id,
         string $name,
         string $type,
         string $dimension,

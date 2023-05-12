@@ -17,7 +17,7 @@ class EpisodeController
     public function allEpisodes(): View
     {
         $episodeCount = $this->client->getEpisodeCount();
-        $response = $this->client->getMultipleEpisodesById(range(1,$episodeCount));
+        $response = $this->client->getMultipleEpisodesById(range(1, $episodeCount));
         return new View('episodes', ['episodes' => $response]);
     }
 

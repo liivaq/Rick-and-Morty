@@ -123,21 +123,36 @@ class ApiClient
         }
     }
 
-    public function getMultipleCharactersById(?array $id): array
+    public function getMultipleCharactersById(?array $ids): array
     {
-        if (!$id) {
+        if (!$ids) {
             return [];
         }
 
         try {
-            $response = json_decode($this->client->get(
-                'character/' . implode(',', $id))->getBody()->getContents());
             $characters = [];
-            if (count($id) === 1) {
-                $characters [] = $this->getSingleCharacter($response->id);
+            $toFetch = [];
+            foreach ($ids as $id) {
+                if (!Cache::has('character_' . $id)) {
+                    $toFetch[] = $id;
+                } else {
+                    $characters[] = $this->createCharacter(json_decode(Cache::get('character_' . $id)));
+                }
+            }
+
+            if (!$toFetch) {
+                return $characters;
+            }
+
+            $response = json_decode($this->client->get(
+                'character/' . implode(',', $toFetch))->getBody()->getContents());
+            if (count($ids) === 1) {
+                $characters [] = $this->createCharacter($response);
             } else {
                 foreach ($response as $character) {
-                    $characters[] = $this->getSingleCharacter($character->id);
+                    $ch = $this->createCharacter($character);
+                    $characters [] = $ch;
+                    Cache::save('character_' . $character->id, json_encode($character));
                 }
             }
             return $characters;
@@ -167,22 +182,40 @@ class ApiClient
 
     public function getMultipleEpisodesById(array $ids): array
     {
+        if (!$ids) {
+            return [];
+        }
+
         try {
             $episodes = [];
-            $response = json_decode($this->client->get(
-                'episode/' . implode(',', $ids))->getBody()->getContents());
+            $toFetch = [];
+            foreach ($ids as $id) {
+                if (!Cache::has('episode_' . $id)) {
+                    $toFetch[] = $id;
+                } else {
+                    $episodes[] = $this->createEpisode(json_decode(Cache::get('episode_' . $id)));
+                }
+            }
 
+            if (!$toFetch) {
+                return $episodes;
+            }
+
+            $response = json_decode($this->client->get(
+                'episode/' . implode(',', $toFetch))->getBody()->getContents());
             if (count($ids) === 1) {
                 $episodes [] = $this->createEpisode($response);
             } else {
                 foreach ($response as $episode) {
-                    $episodes[] = $this->createEpisode($episode);
+                    $ep = $this->createEpisode($episode);
+                    $episodes[] = $ep;
+                    Cache::save('episode_' . $episode->id, json_encode($episode));
                 }
             }
-            return $episodes;
         } catch (GuzzleException $exception) {
             return [];
         }
+        return $episodes;
     }
 
     public function getSingleEpisode(int $id): ?Episode

@@ -29,7 +29,7 @@ class Page
 
     public function getNext(): int
     {
-        if(!$this->next){
+        if (!$this->next) {
             return $this->pages;
         }
         $query = parse_url($this->next, PHP_URL_QUERY);
@@ -40,7 +40,7 @@ class Page
 
     public function getPrev(): int
     {
-        if(!$this->prev){
+        if (!$this->prev) {
             return 1;
         }
         $query = parse_url($this->prev, PHP_URL_QUERY);
