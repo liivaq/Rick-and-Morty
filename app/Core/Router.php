@@ -6,37 +6,15 @@ use FastRoute;
 
 class Router
 {
-    public static function route()
+    public static function route(array $routes)
     {
-        $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) {
-            $router->addRoute(
-                'GET', '/', ['App\Controllers\CharacterController', 'characters']
-            );
-            $router->addRoute(
-                'GET', '/search', ['App\Controllers\CharacterController', 'search']
-            );
+        $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) use ($routes) {
+            foreach ($routes as $route) {
+                [$method, $path, $handler] = $route;
+                $router->addRoute($method, $path, $handler);
+            };
 
-            $router->addRoute(
-                'GET', '/characters[/{page}]', ['App\Controllers\CharacterController', 'characters']
-            );
-
-            $router->addRoute(
-                'GET', '/episodes', ['App\Controllers\EpisodeController', 'allEpisodes']
-            );
-            $router->addRoute(
-                'GET', '/locations[/{page}]', ['App\Controllers\LocationController', 'locations']
-            );
-            $router->addRoute(
-                'GET', '/character[/{page}]', ['App\Controllers\CharacterController', 'singleCharacter']
-            );
-            $router->addRoute(
-                'GET', '/episode[/{page}]', ['App\Controllers\EpisodeController', 'singleEpisode']
-            );
-            $router->addRoute(
-                'GET', '/location[/{page}]', ['App\Controllers\LocationController', 'singleLocation']
-            );
         });
-
         $httpMethod = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
 
