@@ -6,10 +6,9 @@ Simple webpage to browse Rick and Morty characters, episodes and locations.
 
 1. Open files from this repository in a code editor.
 2. Run ```composer install```.
-3. Add folder named ``cache`` it the main project folder,
-4. In your terminal start a local server, using command ```php -S localhost:8000 -t public/```.
-5. Open the link in a web browser of your choice.
-6. Enjoy!
+3. In your terminal start a local server, using command ```php -S localhost:8000 -t public/```.
+4. Open the link in a web browser of your choice.
+5. Enjoy!
 
 # Preview:
 
