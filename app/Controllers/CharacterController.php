@@ -2,35 +2,48 @@
 
 namespace App\Controllers;
 
-use App\ApiClient;
 use App\Core\View;
+use App\Exceptions\CharacterNotFoundException;
+use App\Exceptions\PageNotFoundException;
+use App\Services\Character\Index\IndexCharacterRequest;
+use App\Services\Character\Index\IndexCharacterService;
+use App\Services\Character\Search\SearchCharacterRequest;
+use App\Services\Character\Search\SearchCharacterService;
+use App\Services\Character\Show\ShowCharacterRequest;
+use App\Services\Character\Show\ShowCharacterService;
 
 class CharacterController
 {
-    private ApiClient $client;
-
-    public function __construct()
-    {
-        $this->client = new ApiClient();
-    }
-
-    public function characters(array $vars): View
+    public function all(array $vars): View
     {
         $page = isset($vars['page']) ? (int)$vars['page'] : 1;
-        $response = $this->client->getCharacterPage($page);
-        return new View('characters', $response);
-    }
 
+        try {
+            $service = new IndexCharacterService();
+            $response = $service->execute(new IndexCharacterRequest($page));
 
-    public function singleCharacter(array $vars): View
-    {
-        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
-        $character = $this->client->getSingleCharacter($page);
-        if (!$character) {
-            return new View('notFound', []);
+            return new View('characters', $response);
+        }catch (PageNotFoundException $e){
+            return new View ('notFound', []);
         }
-        $episodes = $this->client->getMultipleEpisodesById($character->getEpisodeIds());
-        return new View('singleCharacter', ['character' => $character, 'episodes' => $episodes]);
+    }
+
+    public function show(array $vars): View
+    {
+        $page = isset($vars['page']) ? (int)$vars['page'] : 1;
+
+        try {
+            $service = new ShowCharacterService();
+            $response = $service->execute(new ShowCharacterRequest($page));
+            return new View(
+                'singleCharacter',
+                [
+                    'character' => $response->getCharacter(),
+                    'episodes' => $response->getEpisodes()
+                ]);
+        } catch (CharacterNotFoundException $e) {
+            return new View ('notFound', []);
+        }
     }
 
     public function search(): View
@@ -40,7 +53,9 @@ class CharacterController
         $status = $_GET['status'] ?? '';
         $gender = $_GET['gender'] ?? '';
 
-        $characters = $this->client->searchCharacters($page, $name, $status, $gender);
+        $service = new SearchCharacterService();
+        $characters = $service->execute(new SearchCharacterRequest($page, $name, $status, $gender));
+
         return new View('characters', $characters);
     }
 }

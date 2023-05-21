@@ -2,34 +2,36 @@
 
 namespace App\Controllers;
 
-use App\ApiClient;
 use App\Core\View;
+use App\Exceptions\EpisodeNotFoundException;
+use App\Services\Episode\Index\IndexEpisodeService;
+use App\Services\Episode\Show\ShowEpisodeRequest;
+use App\Services\Episode\Show\ShowEpisodeService;
 
 class EpisodeController
 {
-    private ApiClient $client;
-
-    public function __construct()
-    {
-        $this->client = new ApiClient();
-    }
-
     public function allEpisodes(): View
     {
-        $episodeCount = $this->client->getEpisodeCount();
-        $response = $this->client->getMultipleEpisodesById(range(1, $episodeCount));
+        $service = new IndexEpisodeService();
+        $response = $service->execute();
         return new View('episodes', ['episodes' => $response]);
     }
 
     public function singleEpisode(array $vars): View
     {
         $page = isset($vars['page']) ? (int)$vars['page'] : 1;
-        $episode = $this->client->getSingleEpisode($page);
-        if (!$episode) {
+
+        try {
+            $service = new ShowEpisodeService();
+            $response = $service->execute(new ShowEpisodeRequest($page));
+            return new View(
+                'singleEpisode',
+                [
+                    'episode' => $response->getEpisode(),
+                    'characters' => $response->getCharacters()
+                ]);
+        } catch (EpisodeNotFoundException $e) {
             return new View('notFound', []);
         }
-        $characters = $this->client->getMultipleCharactersById($episode->getCharacterIds());
-        return new View('singleEpisode', ['episode' => $episode, 'characters' => $characters]);
     }
-
 }

@@ -7,36 +7,39 @@ class Character
     private string $name;
     private string $status;
     private string $species;
-    private ?Location $origin;
-    private ?Location $location;
+    private int $originId;
+    private int $locationId;
     private string $image;
     private string $url;
     private array $episodeIds;
-    private Episode $firstEpisode;
+    private int $firstEpisodeId;
+    private ?Episode $firstEpisode = null;
+    private ?Location $location = null;
+    private ?Location $origin = null;
 
     public function __construct(
-        int       $id,
-        string    $name,
-        string    $status,
-        string    $species,
-        ?Location $origin,
-        ?Location $location,
-        string    $image,
-        string    $url,
-        array     $episodes,
-        Episode   $firstEpisode
+        int    $id,
+        string $name,
+        string $status,
+        string $species,
+        int    $originId,
+        int    $locationId,
+        string $image,
+        string $url,
+        array  $episodes,
+        int    $firstEpisodeId
     )
     {
         $this->id = $id;
         $this->name = $name;
         $this->status = $status;
         $this->species = $species;
-        $this->origin = $origin;
-        $this->location = $location;
+        $this->originId = $originId;
+        $this->locationId = $locationId;
         $this->image = $image;
         $this->url = $url;
         $this->episodeIds = $episodes;
-        $this->firstEpisode = $firstEpisode;
+        $this->firstEpisodeId = $firstEpisodeId;
     }
 
     public function getId(): int
@@ -59,14 +62,14 @@ class Character
         return $this->species;
     }
 
-    public function getOrigin(): ?Location
+    public function getOriginId(): int
     {
-        return $this->origin;
+        return $this->originId;
     }
 
-    public function getLocation(): ?Location
+    public function getLocationId(): int
     {
-        return $this->location;
+        return $this->locationId;
     }
 
     public function getImage(): string
@@ -84,8 +87,38 @@ class Character
         return $this->episodeIds;
     }
 
-    public function getFirstEpisode(): Episode
+    public function getFirstEpisodeId(): int
+    {
+        return $this->firstEpisodeId;
+    }
+
+    public function setFirstEpisode(Episode $firstEpisode): void
+    {
+        $this->firstEpisode = $firstEpisode;
+    }
+
+    public function getFirstEpisode(): ?Episode
     {
         return $this->firstEpisode;
+    }
+
+    public function setLocation(?Location $location): void
+    {
+        $this->location = $location;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setOrigin(?Location $origin): void
+    {
+        $this->origin = $origin;
+    }
+
+    public function getOrigin(): ?Location
+    {
+        return $this->origin;
     }
 }
